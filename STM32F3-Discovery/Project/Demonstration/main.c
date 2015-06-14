@@ -194,58 +194,20 @@ void ReadOrientation(float *pHeading, float *pRoll, float *pPitch)
   fCosPitch = sqrt(1.0-(fSinPitch * fSinPitch));
   if ( fSinRoll >0)
   {
-    if (fCosRoll>0)
-    {
       RollAng = acos(fCosRoll)*180/PI;
-    }
-		else
-    {
-      RollAng = acos(fCosRoll)*180/PI + 180;
-    }
   }
   else
   {
-    if (fCosRoll>0)
-    {
-      RollAng = acos(fCosRoll)*180/PI + 360;
-    }
-    else
-    {
-      RollAng = acos(fCosRoll)*180/PI + 180;
-    }
+      RollAng = 360 - acos(fCosRoll)*180/PI;
   }
      
   if ( fSinPitch >0)
   {
-    if (fCosPitch>0)
-    {
       PitchAng = acos(fCosPitch)*180/PI;
-    }
-    else
-    {
-      PitchAng = acos(fCosPitch)*180/PI + 180;
-    }
   }
   else
   {
-    if (fCosPitch>0)
-    {
-      PitchAng = acos(fCosPitch)*180/PI + 360;
-    }
-    else
-    {
-      PitchAng = acos(fCosPitch)*180/PI + 180;
-    }
-  }
-
-  if (RollAng >=360)
-  {
-    RollAng = RollAng - 360;
-  }
-      
-  if (PitchAng >=360)
-  {
-    PitchAng = PitchAng - 360;
+      PitchAng = 360 - acos(fCosPitch)*180/PI;
   }
       
   fTiltedX = MagBuffer[0]*fCosPitch+MagBuffer[2]*fSinPitch;
