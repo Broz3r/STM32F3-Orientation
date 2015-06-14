@@ -1,21 +1,27 @@
 \select@language {french}
 \contentsline {chapter}{Introduction}{2}
-\contentsline {chapter}{\numberline {1}Etudes pr\'ealables}{3}
+\contentsline {paragraph}{}{2}
+\contentsline {chapter}{\numberline {1}\'Etudes pr\'ealables}{3}
 \contentsline {section}{\numberline {1.1}Quid d'une centrale inertielle ?}{3}
+\contentsline {paragraph}{}{3}
+\contentsline {paragraph}{}{3}
+\contentsline {paragraph}{}{3}
 \contentsline {paragraph}{}{3}
 \contentsline {section}{\numberline {1.2}Consid\'erations th\'eoriques}{3}
 \contentsline {paragraph}{}{3}
-\contentsline {section}{\numberline {1.3}Mat\'eriel mis a disposition}{3}
 \contentsline {paragraph}{}{3}
-\contentsline {chapter}{\numberline {2}R\'ealisation du projet}{4}
-\contentsline {section}{\numberline {2.1}Impl\'ementation sur la carte STM32F3}{4}
 \contentsline {paragraph}{}{4}
-\contentsline {section}{\numberline {2.2}Interface utilisateur}{4}
+\contentsline {section}{\numberline {1.3}Mat\'eriel mis a disposition}{4}
 \contentsline {paragraph}{}{4}
-\contentsline {chapter}{\numberline {3}Am\'eliorations possibles}{5}
-\contentsline {section}{\numberline {3.1}Gestion des acc\'el\'erom\`etre}{5}
+\contentsline {chapter}{\numberline {2}R\'ealisation du projet}{5}
+\contentsline {section}{\numberline {2.1}Impl\'ementation sur la carte STM32F3}{5}
 \contentsline {paragraph}{}{5}
-\contentsline {section}{\numberline {3.2}Fiabilit\'e}{5}
+\contentsline {section}{\numberline {2.2}Interface utilisateur}{5}
 \contentsline {paragraph}{}{5}
-\contentsline {chapter}{Conclusion}{6}
+\contentsline {chapter}{\numberline {3}Am\'eliorations possibles}{6}
+\contentsline {section}{\numberline {3.1}Gestion des acc\'el\'erom\`etres}{6}
 \contentsline {paragraph}{}{6}
+\contentsline {section}{\numberline {3.2}Fiabilit\'e}{6}
+\contentsline {paragraph}{}{6}
+\contentsline {chapter}{Conclusion}{7}
+\contentsline {paragraph}{}{7}

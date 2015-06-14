@@ -6,6 +6,7 @@
 \usepackage{libertine}
 \usepackage[pdftex]{graphicx}
 \usepackage{eurosym}
+\usepackage{amsmath}
 
 
 \newcommand{\hsp}{\hspace{20pt}}
@@ -49,13 +50,81 @@
 \addcontentsline{toc}{chapter}{Introduction}
 	Le but de ce projet est de créer à l'aide d'une carte électronique STM32F3 Discovery une centrale inertielle en utilisant les accéléromètres et les gyroscopes embarqués dans la carte.
 	
-\chapter{Etudes préalables}
+	\paragraph{}
+	Tous les calculs doivent être effectué par le microprocesseur STM32 sur la carte embarquée. Les informations de positions calculées seront alors envoyer à un terminal via une liaison série.
+	
+\chapter{Études préalables}
 	\section{Quid d'une centrale inertielle ?}
 	\paragraph{}
+	\begin{quote}
+\emph{	Une centrale à inertie ou centrale inertielle est un instrument utilisé en navigation, capable d'intégrer les mouvements d'un mobile (accélération et vitesse angulaire) pour estimer son orientation (angles de roulis, de tangage et de cap), sa vitesse linéaire et sa position. L'estimation de position est relative au point de départ ou au dernier point de recalage.}\footnote{définition de Wikipedia} \end{quote}
+	
+	\paragraph{}
+	En effet, une centrale inertielle est un appareil de mesure permettant de connaître la position de l'objet sur lequel elle est fixée sans avoir besoin d'informations extérieures. La seule connaissance de l'accélération linéaire selon trois axes ainsi que les vitesses angulaires autours de ces trois même axes permet de calculer la position relative de l'objet par rapport à sont point de départ.
+	
+	\paragraph{}
+	Cet instrument de mesure est encore utilisé dans tous les avions de ligne pour compenser l'imprécision des systèmes satellitaires comme le GPS.
+	
+	\paragraph{}
+	La précision d'une centrale inertielle varie en fonction de la précision des capteurs (accéléromètres et gyroscopes) utilisés mais aussi en fonction de algorithme de calcul utilisé pour traiter les données.
 	
 	\section{Considérations théoriques}
+	\subsection*{Calcul de la position}
 	\paragraph{}
+	Les capteurs nous remontent une accélération linéaire ainsi qu'une vitesse angulaire suivant les trois axes (que nous appellerons X, Y et Z) de la centrale inertielle.\\
+	Pour déterminer la position, le processeur doit déjà effectuer une intégration de l'accélération pour déterminer les vitesses linéaires par rapport au sol :
+	\begin{equation}\vec{V}=\int{\vec{\gamma}dt}\end{equation}
+	Puis pour déterminer la position, il doit encore intégrer la vitesse en prenant en compte la position de départ $ x_{0} $ :
+	\begin{equation}x=\int{\vec{V}dt}+x_0\end{equation}
+	Ces trois positions (une suivant chaque axe de la centrale) sont calculé par rapport au repère de la centrale et non le repère terrestre supposé galiléen. Or nous souhaitons connaître la position de l'objet dans un référentiel absolu.\\
+	Pour cela il nous faut faire un changement de base, mais avant tout, connaître l'orientation de la centrale inertielle dans le repère de base.
 	
+	\subsection*{Calcul de l'orientation}
+	\paragraph{}
+	Les gyroscopes nous permettent de mesurer la vitesse de rotation autour des trois axes. Comme pour retrouver la position, le processeur doit effectuer une intégration :
+	\begin{equation}\alpha=\int{\omega dt}+\alpha_0\end{equation}
+	
+	\subsection*{Calcul du changement de base}
+	Une fois l'orientation de la centrale par rapport au sol connue, il est possible de calculer le vecteur accélération, vitesse ou position de la centrale inertielle dans le repère absolu grâce à la théorie des \emph{angles d'Euler} :
+	
+	\paragraph{} Connaissant les angles $\theta$, $\phi$, $\psi$ respectivement autour de x, y et z on peut calculer la matrice de rotation $R$ :
+
+	\begin{equation}R=
+\begin{pmatrix}
+   1 & 0 & 0 \\
+   0 & \cos\theta & -\sin\theta \\
+   0 & \sin\theta & \cos\theta 
+\end{pmatrix}
+	*
+\begin{pmatrix}
+   \cos\phi & 0 & \sin\phi \\
+   0 & 1 & 0 \\
+   -\sin\phi & 0 & \cos\phi 
+\end{pmatrix}
+	*
+\begin{pmatrix}
+   \cos\psi & -\sin\psi & 0 \\
+   \sin\psi & \cos\psi & 0 \\
+   0 & 0 & 1 
+\end{pmatrix}
+		\end{equation}
+		
+		Ce qui donne la forme général suivante :
+		\begin{equation}
+		R=
+		\begin{pmatrix}
+		\cos\psi\cos\phi & -\sin\psi\cos\theta+\cos\psi\sin\phi\sin\theta & \sin\psi\sin\theta+\cos\psi\sin\phi\cos\theta \\
+		\sin\psi\cos\phi & \cos\psi\cos\theta+\sin\psi\sin\phi\sin\theta & -\cos\psi\sin\theta+\sin\psi\sin\phi\cos\theta \\
+		-\sin\phi & \cos\phi\sin\theta & \cos\phi\cos\theta
+		\end{pmatrix}
+		\end{equation}
+		
+		Ce qui permet ensuite, connaissant le vecteur position $POS$ $\begin{pmatrix}X\\Y\\Z\end{pmatrix}$ dans le repère de la centrale de calculer le vecteur position $POS'$ $\begin{pmatrix}X'\\Y'\\Z'\end{pmatrix}$ dans le repère absolu :
+		
+		\begin{equation}
+		POS' = R*POS
+		\end{equation}
+		
 	\section{Matériel mis a disposition}
 	\paragraph{}
 
