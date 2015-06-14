@@ -1,0 +1,80 @@
+\documentclass{livret}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage[frenchb]{babel}
+\usepackage{libertine}
+\usepackage[pdftex]{graphicx}
+\usepackage{eurosym}
+
+
+\newcommand{\hsp}{\hspace{20pt}}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\begin{document}
+
+\begin{titlepage}
+  \begin{sffamily}
+  \begin{center}
+		\includegraphics[width=200pt]{cpe.jpg}
+
+    \textsc{\Large Rapport de projet d'électronique}\\[1.5cm]
+
+    % Title
+    \HRule \\[0.4cm]
+    { \huge \bfseries Centrale inertielle\\[0.4cm] }
+
+    \HRule \\[2cm]
+
+    % Author and supervisor
+    \begin{minipage}{0.4\textwidth}
+      \begin{flushleft} \large
+        MOUGIN \textsc{Paul}\\
+        RATTRAPAGE DE 4ETI 2013\\
+      \end{flushleft}
+    \end{minipage}
+
+    \vfill
+
+    % Bottom of the page
+    {\large Juin 2015}
+
+  \end{center}
+  \end{sffamily}
+\end{titlepage}
+
+\tableofcontents
+
+\chapter*{Introduction}
+\addcontentsline{toc}{chapter}{Introduction}
+	Le but de ce projet est de créer à l'aide d'une carte électronique STM32F3 Discovery une centrale inertielle en utilisant les accéléromètres et les gyroscopes embarqués dans la carte.
+	
+\chapter{Etudes préalables}
+	\section{Quid d'une centrale inertielle ?}
+	\paragraph{}
+	
+	\section{Considérations théoriques}
+	\paragraph{}
+	
+	\section{Matériel mis a disposition}
+	\paragraph{}
+
+\chapter{Réalisation du projet}
+	\section{Implémentation sur la carte STM32F3}
+		\paragraph{}
+
+	\section{Interface utilisateur}
+	\paragraph{}
+	
+\chapter{Améliorations possibles}
+	\section{Gestion des accéléromètres}
+	\paragraph{}
+	
+	\section{Fiabilité}
+	\paragraph{}
+		
+\chapter*{Conclusion}
+\addcontentsline{toc}{chapter}{Conclusion}
+\paragraph{}
+	
+\end{document}
