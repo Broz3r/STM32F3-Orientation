@@ -1,0 +1,6 @@
+-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I.\..\ -I.\..\..\..\Libraries\CMSIS\Device\ST\STM32F30x\Include -I.\..\..\..\Libraries\STM32F30x_StdPeriph_Driver\inc -I.\..\..\..\Libraries\STM32_USB-FS-Device_Driver\inc -I.\..\..\..\Utilities\STM32F3_Discovery -I..\..\..\Libraries\CMSIS\Include
+-I "C:\Dev\Workspace\Projet Electronique\STM32F3-Discovery_FW_V1.1.0\Project\Demonstration\MDK-ARM\RTE"
+-I "C:\Dev\Keil 5\ARM\PACK\Keil\STM32F3xx_DFP\1.2.0\Device\Include"
+-I "C:\Dev\Keil 5\ARM\CMSIS\Include"
+-D__UVISION_VERSION="513" -DSTM32F303xC -DUSE_STDPERIPH_DRIVER -DSTM32F30X
+-o .\demo\ex1_vcp_helloworld.o --omf_browse .\demo\ex1_vcp_helloworld.crf --depend .\demo\ex1_vcp_helloworld.d "..\Examples - VCP\ex1_VCP_HelloWorld.c"
