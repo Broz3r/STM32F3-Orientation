@@ -10,18 +10,26 @@
 \contentsline {section}{\numberline {1.2}Consid\'erations th\'eoriques}{3}
 \contentsline {paragraph}{}{3}
 \contentsline {paragraph}{}{3}
+\contentsline {paragraph}{}{3}
 \contentsline {paragraph}{}{4}
-\contentsline {section}{\numberline {1.3}Mat\'eriel mis a disposition}{4}
 \contentsline {paragraph}{}{4}
-\contentsline {chapter}{\numberline {2}R\'ealisation du projet}{5}
-\contentsline {section}{\numberline {2.1}Impl\'ementation sur la carte STM32F3}{5}
+\contentsline {paragraph}{}{4}
 \contentsline {paragraph}{}{5}
-\contentsline {section}{\numberline {2.2}Interface utilisateur}{5}
 \contentsline {paragraph}{}{5}
-\contentsline {chapter}{\numberline {3}Am\'eliorations possibles}{6}
-\contentsline {section}{\numberline {3.1}Gestion des acc\'el\'erom\`etres}{6}
+\contentsline {paragraph}{}{5}
+\contentsline {paragraph}{}{5}
+\contentsline {paragraph}{}{5}
+\contentsline {chapter}{\numberline {2}R\'ealisation du projet}{6}
+\contentsline {section}{\numberline {2.1}Mat\'eriel mis \`a disposition}{6}
 \contentsline {paragraph}{}{6}
-\contentsline {section}{\numberline {3.2}Fiabilit\'e}{6}
+\contentsline {section}{\numberline {2.2}Impl\'ementation sur la carte STM32F3}{6}
 \contentsline {paragraph}{}{6}
-\contentsline {chapter}{Conclusion}{7}
+\contentsline {section}{\numberline {2.3}Interface utilisateur}{6}
+\contentsline {paragraph}{}{6}
+\contentsline {chapter}{\numberline {3}Am\'eliorations possibles}{7}
+\contentsline {section}{\numberline {3.1}Gestion des acc\'el\'erom\`etres}{7}
 \contentsline {paragraph}{}{7}
+\contentsline {section}{\numberline {3.2}Fiabilit\'e}{7}
+\contentsline {paragraph}{}{7}
+\contentsline {chapter}{Conclusion}{8}
+\contentsline {paragraph}{}{8}

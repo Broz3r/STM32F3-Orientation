@@ -7,6 +7,7 @@
 \usepackage[pdftex]{graphicx}
 \usepackage{eurosym}
 \usepackage{amsmath}
+\usepackage{SIunits}
 
 
 \newcommand{\hsp}{\hspace{20pt}}
@@ -76,13 +77,39 @@
 	\begin{equation}\vec{V}=\int{\vec{\gamma}dt}\end{equation}
 	Puis pour déterminer la position, il doit encore intégrer la vitesse en prenant en compte la position de départ $ x_{0} $ :
 	\begin{equation}x=\int{\vec{V}dt}+x_0\end{equation}
+	
+	Il existe plusieurs algorithmes permettant de calculer les intégrales succéssives; méthodes plus ou moins complexes et plus ou moins précises qui seront explorées dans la partie \emph{Calcul de l'intégration}.
+	\paragraph{}
 	Ces trois positions (une suivant chaque axe de la centrale) sont calculé par rapport au repère de la centrale et non le repère terrestre supposé galiléen. Or nous souhaitons connaître la position de l'objet dans un référentiel absolu.\\
 	Pour cela il nous faut faire un changement de base, mais avant tout, connaître l'orientation de la centrale inertielle dans le repère de base.
 	
 	\subsection*{Calcul de l'orientation}
 	\paragraph{}
-	Les gyroscopes nous permettent de mesurer la vitesse de rotation autour des trois axes. Comme pour retrouver la position, le processeur doit effectuer une intégration :
-	\begin{equation}\alpha=\int{\omega dt}+\alpha_0\end{equation}
+	Pour connaître l'orientation de la centrale il nous faut connaître les angles de roulis, de tangage et de lacet (roll, pitch et heading en anglais) représentés sur la figure suivante :
+	
+	\newpage
+	
+	\begin{figure}
+	\centering
+		\includegraphics[scale=0.7]{RollPitchHeading.png}
+	\caption{Angles de roulis, tangage et lacet}
+	\end{figure}
+	
+	L'angle de roulis et de tangage sont calculables grâce aux composantes du vecteur accélération mesurées par accéléromètre de la carte notée $G_{Acc}=(G_{x}, G_{y}, G_{z})$ :
+	\begin{equation}Roll=\arctan\left(\frac{-G_x}{Gz}\right)\end{equation}
+	\begin{equation}Pitch=\arctan\left(\frac{G_y}{\sqrt{G_x^2+G_z^2}}\right)\end{equation}
+	
+	\paragraph{}
+	L'angle de roulis (Roll) a une amplitude de $[-180; 180]$ et l'angle de tangage (Pitch) a une amplitude de $[-90; 90]$. Il n'est pas possible d'obtenir une amplitude de $360\degree$ sur les deux angles, il a donc été décidé de limiter l'angle de tangage sur une plage de $180\degree$.\\
+	Ces deux formules sont tirées de la théorie des angles d'Euler. La démonstration de ces formules est détaillée dans la documentation \emph{Tilt Sensing Using a Three-Axis Accelerometer} de \textsc{Freescale Semiconductor} dont la référence se trouve en \textsc{Annexe}.
+	
+	\paragraph{}
+	Pour calculer l'angle de lacet, il est nécessaire d'utiliser le magnétomètre de la carte car l'accéléromètre  seul ne nous permet pas d'aller plus loin. Nous récupérons les données du magnétomètre dans un vecteur $M = (M_x, M_y, M_z)$ ce qui nous permet de calculer les \emph{"`angles d'inclinaisons"'} aussi appelés \emph{tilted angles} :
+	\begin{equation}x_{tilted}=M_x\cos(Pitch) + M_z\sin(Pitch)\end{equation}
+	\begin{equation}y_{tilted}=M_x\sin(Roll)\sin(Pitch) + M_y\cos(Roll) - M_z\sin(Roll)\cos(Pitch)\end{equation}
+	
+	Ces \emph{tilted angles} nous permettent ensuite de calculer l'angle de lacet (Heading) :
+	\begin{equation}Heading=\arctan\left(\frac{y_{tilted}}{x_{tilted}}\right)\end{equation}
 	
 	\subsection*{Calcul du changement de base}
 	Une fois l'orientation de la centrale par rapport au sol connue, il est possible de calculer le vecteur accélération, vitesse ou position de la centrale inertielle dans le repère absolu grâce à la théorie des \emph{angles d'Euler} :
@@ -95,13 +122,13 @@
    0 & \cos\theta & -\sin\theta \\
    0 & \sin\theta & \cos\theta 
 \end{pmatrix}
-	*
+	\cdot
 \begin{pmatrix}
    \cos\phi & 0 & \sin\phi \\
    0 & 1 & 0 \\
    -\sin\phi & 0 & \cos\phi 
 \end{pmatrix}
-	*
+	\cdot
 \begin{pmatrix}
    \cos\psi & -\sin\psi & 0 \\
    \sin\psi & \cos\psi & 0 \\
@@ -122,15 +149,44 @@
 		Ce qui permet ensuite, connaissant le vecteur position $POS$ $\begin{pmatrix}X\\Y\\Z\end{pmatrix}$ dans le repère de la centrale de calculer le vecteur position $POS'$ $\begin{pmatrix}X'\\Y'\\Z'\end{pmatrix}$ dans le repère absolu :
 		
 		\begin{equation}
-		POS' = R*POS
+		POS' = R \cdot POS
 		\end{equation}
 		
-	\section{Matériel mis a disposition}
+		\subsection*{Calcul de l'intégration}
+		\paragraph{}
+		comme dit plus haut, il existe plusieurs méthodes de calcul des intégrales certaines plus complexes et plus précises que d'autres. Nous allons en exposer deux :
+		\subsubsection*{La méthode d'Euler}
+		\paragraph{}
+		La méthode d'Euler est une méthode numérique élémentaire de résolution d'équation différentielles du premier ordre. Elle consiste sur un intervalle de temps le plus court possible d'approximer une courbe grâce à ça dérivée.
+		\paragraph{}
+		On sait par la théorie de la dérivation que pour n'importe quelle fonction $f(x)$ dont la primitive est $F(x)$ sur un intervalle défini on a :
+		\begin{equation}\lim_{h \to 0}\frac{F(x+h)-F(x)}{h}=f(x)\end{equation}
+		
+		aussi par conséquent si $h$ est très petit il est possible de calculer la Primitive de $f(x)$ par récurrence :
+		\begin{equation}F(x+h)\approx F(x) + f(x)h\end{equation}
+		
+		Cette méthode très simpliste permet d'approximer l'intégration de manière assez grossière. L'erreur de cette méthode est d'ordre 2 soit $o(h^2)$ ce qui est assez élevé. Cette erreur est d'autant plus élevé lorsque l'on pratique cette méthode deux fois à la suite comme c'est le cas pour la centrale inertielle.
+		
+		\subsubsection*{Méthode de Simpson}
+		\paragraph{}
+		La méthode de Simpson utilise une approximation d'ordre 2 de $f$ grâce au polynôme quadratique $P$. Le polynôme représente une parabole entre $a$ et $b$ qui prend les même valeurs que $f$ aux points $a$, $b$ et $m=\frac{(a+b)}{2}$. On connait alors l'expression de cette parabole grâce à l'interpolation de Lagrange:
+		\begin{equation}P(x)=f(a)\frac{x-m)(x-b)}{(a-m)(a-b)} + f(m)\frac{(x-a)x-b)}{(m-a)(m-b)} + f(b)\frac{(x-a)(x-m)}{(b-a)(b-m)}\end{equation}
+		Le polynôme étant plus facile a intégrer on peut ainsi approximer l'intégrale de $f$ sur l'intervalle $[a, b]$ :
+		\begin{equation}\int_a^b{f(x)dx}\approx \int_a^b{P(x)dx} = \frac{b-a}{6}\left[f(a)+4f(\frac{a+b}{2}+f(b)\right]\end{equation}
+		
+		Ainsi il est possible d'approximer l'intégrale de l'accélération pour en déduire la vitesse, en rendant l'intervalle $[a, b]$ le plus petit possible et en effectuant la somme successive des approximations.
 	\paragraph{}
+	Une méthode plus précise que la méthode d'Euler puisque sont erreur est d'ordre 4 soit $o(h^4)$ ce qui, concaténé à elle même laisse une erreur d'ordre 2, ce qui peut être suffisant pour notre centrale.
+		
+
 
 \chapter{Réalisation du projet}
+	\section{Matériel mis à disposition}
+	\paragraph{}
+
+
 	\section{Implémentation sur la carte STM32F3}
-		\paragraph{}
+	\paragraph{}
 
 	\section{Interface utilisateur}
 	\paragraph{}
