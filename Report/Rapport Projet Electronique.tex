@@ -183,7 +183,20 @@
 \chapter{Réalisation du projet}
 	\section{Matériel mis à disposition}
 	\paragraph{}
-
+	Pour la réalisation de cette centrale inertielle, le seul élément imposé était la carte de développement: une \emph{STM32F3-Discovery} de chez \textsc{STMicroelectronics}
+	
+	\begin{figure}[h]
+	\centering
+		\includegraphics[scale=0.3]{stm32f3discovery.jpg}
+	\caption{Carte \emph{STM32F3-Discovery} de \textsc{STMicroelectronics}}
+	\end{figure}
+	
+	\paragraph{}
+	Cette carte d'évaluation est équipée d'un microprocesseur ARM Cortex-M4, 256 KB de mémoire Flash et 46 KB de mémoire RAM. La carte embarque un accéléromètre LSM303DLHC trois axes et un gyroscope L3GD20 trois axes. La carte est également équipée de LED de différente couleurs ainsi que de deux boutons poussoirs.
+	
+	\paragraph{}
+	Au niveau de la communication extérieur, la carte est équipée de deux port mini-USB. L'un, le ST-LINK/V2 permet de programmer et de débugger la carte à travers un logiciel dédié (nous utiliserons \emph{Keil \micro Vision5} pour cela).\\
+	L'autre permet d'établir une communication avec d'autres éléments. nous l'utiliserons pour établir une liaison série entre la carte et un hyperterminal (\emph{Termite}) ou notre interface utilisateur développé en \emph{Qt}.
 
 	\section{Implémentation sur la carte STM32F3}
 	\paragraph{}
