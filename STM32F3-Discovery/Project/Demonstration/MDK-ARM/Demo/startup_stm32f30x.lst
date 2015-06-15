@@ -777,19 +777,18 @@ ARM Macro Assembler    Page 12
               00000000 
               00000000 
 Command Line: --debug --xref --cpu=Cortex-M4.fp --apcs=interwork --depend=.\dem
-o\startup_stm32f30x.d -o.\demo\startup_stm32f30x.o -I"C:\Dev\Workspace\Projet E
+o\startup_stm32f30x.d -o.\demo\startup_stm32f30x.o -IC:\Dev\Workspace\STM32F3-O
 
 
 
 ARM Macro Assembler    Page 13 
 
 
-lectronique\STM32F3-Discovery_FW_V1.1.0\Project\Demonstration\MDK-ARM\RTE" -I"C
-:\Dev\Keil 5\ARM\PACK\Keil\STM32F3xx_DFP\1.2.0\Device\Include" -I"C:\Dev\Keil 5
-\ARM\CMSIS\Include" --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERS
-ION SETA 513" --predefine="STM32F303xC SETA 1" --list=.\demo\startup_stm32f30x.
-lst ..\..\..\Libraries\CMSIS\Device\ST\STM32F30x\Source\Templates\arm\startup_s
-tm32f30x.s
+rientation\STM32F3-Discovery\Project\Demonstration\MDK-ARM\RTE -I"C:\Dev\Keil 5
+\ARM\PACK\Keil\STM32F3xx_DFP\1.2.0\Device\Include" -I"C:\Dev\Keil 5\ARM\CMSIS\I
+nclude" --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 513
+" --predefine="STM32F303xC SETA 1" --list=.\demo\startup_stm32f30x.lst ..\..\..
+\Libraries\CMSIS\Device\ST\STM32F30x\Source\Templates\arm\startup_stm32f30x.s
 
 
 

@@ -46,6 +46,7 @@ void ReadOrientation(float *pHeading, float *pRoll, float *pPitch);
 #define L3G_Sensitivity_500dps     (float)    57.1429f        /*!< gyroscope sensitivity with 500 dps full scale [LSB/dps] */
 #define L3G_Sensitivity_2000dps    (float)    14.285f	      /*!< gyroscope sensitivity with 2000 dps full scale [LSB/dps] */
 #define PI                         (float)     3.14159265f
+#define alpha											 (float)		0.5
 
 #define LSM_Acc_Sensitivity_2g     (float)     1.0f            /*!< accelerometer sensitivity with 2 g full scale [LSB/mg] */
 #define LSM_Acc_Sensitivity_4g     (float)     0.5f            /*!< accelerometer sensitivity with 4 g full scale [LSB/mg] */
@@ -60,6 +61,7 @@ RCC_ClocksTypeDef 			RCC_Clocks;															//structure used for setting up t
 /* #private variable -----------------------------------------*/
 float MagBuffer[3] = {0.0f}, AccBuffer[3] = {0.0f}, Buffer[3] = {0.0f};
 float Heading, Roll, Pitch;	
+double fXg = 0, fYg = 0, fZg = 0;
 
 
 // Unused global variables that have to be included to ensure correct compiling */
@@ -127,7 +129,7 @@ int main(void)
 		/* Read Gyro Angular data */
 		ReadOrientation(&Heading, &Roll, &Pitch);
 		
-		sprintf(buf, "X: %11.3f   Y: %11.3f   Z: %11.3f\n", Pitch, Roll, Heading);		//print characetrs to the buf string										
+		sprintf(buf, "X: %11.3f   Y: %11.3f   Z: %11.3f\n", Roll, Pitch, Heading);		//print characetrs to the buf string										
 		VCP_PutStr(buf);																													//write a string variable to the VCP
 		Delay(250);
 	}
@@ -167,9 +169,9 @@ Description			: Reads the heading value, roll angle and pitch angle
 
 Special Note(s) : All the calculations in this function was done by ST Microelectronics
 
-Parameters			: *pHeading		-	reference to variable for the heading value (0.0 - 359.999999)
-									*pRoll			-	reference to variable for the roll angle (0.0 - 89.999999)
-									*pPitch			-	reference to variable for the pitch angle (0.0 - 89.999999)
+Parameters			: *pHeading		-	reference to variable for the heading value forced to 0
+									*pRoll			-	reference to variable for the roll angle (-180.0 - 180.0)
+									*pPitch			-	reference to variable for the pitch angle (-90.0 - 90.0)
 Return value		: NONE
 *********************************************************************************************/
 void ReadOrientation(float *pHeading, float *pRoll, float *pPitch)
@@ -185,34 +187,22 @@ void ReadOrientation(float *pHeading, float *pRoll, float *pPitch)
       
   for(i=0;i<3;i++)
 		AccBuffer[i] /= 100.0f;
-			
+
+	//Low Pass Filter
+	fXg = AccBuffer[0] * alpha + (fXg * (1.0 - alpha));
+	fYg = AccBuffer[1] * alpha + (fYg * (1.0 - alpha));
+	fZg = AccBuffer[2] * alpha + (fZg * (1.0 - alpha));
+
+  RollAng = (atan2f(-fYg, fZg)*180.0)/PI;
+  PitchAng = (atan2f(fXg, sqrt(fYg*fYg + fZg*fZg))*180.0)/PI;
+      
 	fNormAcc = sqrt((AccBuffer[0]*AccBuffer[0])+(AccBuffer[1]*AccBuffer[1])+(AccBuffer[2]*AccBuffer[2]));
       
-/*  fSinRoll = -AccBuffer[1]/fNormAcc;
+  fSinRoll = -AccBuffer[1]/fNormAcc;
   fCosRoll = sqrt(1.0-(fSinRoll * fSinRoll));
   fSinPitch = AccBuffer[0]/fNormAcc;
   fCosPitch = sqrt(1.0-(fSinPitch * fSinPitch));
-  if ( fSinRoll >0)
-  {
-      RollAng = acos(fCosRoll)*180/PI;
-  }
-  else
-  {
-      RollAng = 360 - acos(fCosRoll)*180/PI;
-  }
-     
-  if ( fSinPitch >0)
-  {
-      PitchAng = acos(fCosPitch)*180/PI;
-  }
-  else
-  {
-      PitchAng = 360 - acos(fCosPitch)*180/PI;
-  }*/
-
-  RollAng = atan2f(-AccBuffer[0]/AccBuffer[2]);
-  Pitch = atan2f(AccBuffer[1]/sqrt((AccBuffer[0]*AccBuffer[0])+(AccBuffer[1]*AccBuffer[1])));
-      
+	
   fTiltedX = MagBuffer[0]*fCosPitch+MagBuffer[2]*fSinPitch;
   fTiltedY = MagBuffer[0]*fSinRoll*fSinPitch+MagBuffer[1]*fCosRoll-MagBuffer[1]*fSinRoll*fCosPitch;
       
