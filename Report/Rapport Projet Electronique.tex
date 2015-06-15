@@ -210,19 +210,55 @@
 	\paragraph{}
 	Les fonctions utilisées pour récupérer les données des capteurs sont déjà implémentées dans les exemples par \textsc{STMicroelectronics}. Nous utilisons ainsi \emph{Demo\_CompassConfig(void)} pour initialiser le capteur LSM303DLHC puis les fonctions \emph{Demo\_CompassReadAcc(float* pfData)} et \emph{Demo\_CompassReadMag (float pfData)} pour récupérer les données de l'accéléromètre et du magnétomètre.
 	
-	\paragraph{Demo\_CompassConfig(void)}
-	est la fonction qui est appelée pendant l'initialisation du programme et qui permet de configurer correctement les différents capteurs utilisés plus tard dans le programme.\\
+	\subsubsection*{Demo\_CompassConfig(void)}
+	C'est la fonction qui est appelée pendant l'initialisation du programme et qui permet de configurer correctement les différents capteurs utilisés plus tard dans le programme.\\
 	Les paramètres peuvent allez du mode d'alimentation à l'échelle utiliser tout en passant par la configuration des filtres utilisés pour traiter les signaux des capteurs.
 	
-	\paragraph{Demo\_CompassReadAcc(float* pfData) \& Demo\_CompassReadMag (float* pfData)}
-	sont deux fonctions permettent de récupérer les informations des capteurs et de les stocker dans un pointer mis en paramètre. Ces fonctions permettent aussi la calibration des données en fonction du mode choisi à l'initialisation.
+	\subsubsection*{Demo\_CompassReadAcc(float* pfData) \& Demo\_CompassReadMag (float* pfData)}
+	Ce sont deux fonctions permettent de récupérer les informations des capteurs et de les stocker dans un pointer mis en paramètre. Ces fonctions permettent aussi la calibration des données en fonction du mode choisi à l'initialisation.
 
   \subsection{Traitements des données}
 	
 	\paragraph{}
 	Une fois les données récupérer depuis les capteurs ils faut les traiter afin de calculer ce que nous cherchons: l'orientation de la centrale inertielle grâce à ses angles de roulis, de tangage et de lacet ainsi que sa position relative par rapport au référentiel terrestre.
 	
-
+	\subsubsection*{ReadOrientation(float *pHeading, float *pRoll, float *pPitch)} 
+	C'est la fonction qui permet de retourner dans les pointeurs en paramètres les angles d'orientation en effectuant les calculs détaillés dans la partie théorique :
+	
+	\begin{figure}[h]
+	\centering
+		\includegraphics[scale=0.7]{readOrientation}
+	\caption{Fonction void ReadOrientation(float *pHeading, float *pRoll, float *pPitch)}
+	\end{figure}
+	
+	\subsubsection*{EulerMethode(float *pX, float *pY, float *pZ)}
+	C'est la fonction qui permet de retourner dans les pointeurs en paramètre les positions relatives de la carte en utilisant la méthode d'Euler.\\
+	Cette méthode n'a pas encore été implémentée.
+	
+	\subsubsection*{SimpsonMethode(float *pX, float *pY, float *pZ)}
+	C'est la fonction qui permet de retourner dans les pointeurs en paramètre les positions relatives de la carte en utilisant la méthode de Simpson.\\
+	Cette méthode n'a pas encore été implémentée.
+	
+	\subsection{Communication série}
+	Une fois toutes les données calculées, il faut les afficher à l'utilisateur. La carte ne déposant d'aucun affichage intégré, mis à part ses LED, ce qui rend l'affichage pas vraiment évident, il faut communiquer ces données à un autre appareil - comme un PC - qui pourra les afficher.
+	
+	\paragraph{}
+	Avant de parler d'une quelconque interface Homme-Machine, il est donc important de transmettre correctement ces données via une liaison série de type Virtual COM entre le port USB-USER de la carte et un port USB d'un ordinateur.\\
+	La librairie permettant d'envoyer et de recevoir des message à travers une liaison série est aussi une librairie créée et mise à disposition par \textsc{STMicroelectronics} dans son projet de démonstration. \\
+	
+	\paragraph{}
+	En connectant le port USB-USER de la carte à un PC, ce dernier doit installer le bon périphérique et ainsi reconnaître un port de communication VCP. Pour ce connecter à ce port, il faut que la liaison soit effective entre la carte et le PC, que la liaison soit initialisé du côté de la carte et que du côté du PC, on se connecte au port de communication alloué avec les bons paramètres, à savoir :
+	\begin{itemize}
+	\item BaudRate : 115200
+	\item Bits de donnée : 8
+	\item Parité : Non
+	\item Bit de stop : 1
+	\item Contrôle de flux : Non
+	\end{itemize}
+	
+	\paragraph{} Une fois la connexion établie entre les deux entités, on peut envoyer à travers la liaison série grâce à la fonction \emph{VCP\_PutStr(char* buffer)} où le buffer est une chaine de caractères contenant le message que l'on souhaite envoyer. \\
+	Dans notre cas, le protocole est le suivant : \emph{"$X: \%11.3f$   $Y: \%11.3f$   $Z: \%11.3f\backslash n$"} où \emph{\%11.3f} est un nombre flottant avec 3 chiffres avant et après la virgule. Ce protocole permet l'affichage des informations directement dans un hyper terminal comme \emph{Termite} mais aussi la concaténation des informations par un autre logiciel connaissant ce protocole, comme c'est le cas pour l'interface utilisateur.
+	
 	\section{Interface utilisateur}
 	\paragraph{}
 	
