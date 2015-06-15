@@ -188,7 +188,7 @@ void ReadOrientation(float *pHeading, float *pRoll, float *pPitch)
 			
 	fNormAcc = sqrt((AccBuffer[0]*AccBuffer[0])+(AccBuffer[1]*AccBuffer[1])+(AccBuffer[2]*AccBuffer[2]));
       
-  fSinRoll = -AccBuffer[1]/fNormAcc;
+/*  fSinRoll = -AccBuffer[1]/fNormAcc;
   fCosRoll = sqrt(1.0-(fSinRoll * fSinRoll));
   fSinPitch = AccBuffer[0]/fNormAcc;
   fCosPitch = sqrt(1.0-(fSinPitch * fSinPitch));
@@ -208,7 +208,10 @@ void ReadOrientation(float *pHeading, float *pRoll, float *pPitch)
   else
   {
       PitchAng = 360 - acos(fCosPitch)*180/PI;
-  }
+  }*/
+
+  RollAng = atan2f(-AccBuffer[0]/AccBuffer[2]);
+  Pitch = atan2f(AccBuffer[1]/sqrt((AccBuffer[0]*AccBuffer[0])+(AccBuffer[1]*AccBuffer[1])));
       
   fTiltedX = MagBuffer[0]*fCosPitch+MagBuffer[2]*fSinPitch;
   fTiltedY = MagBuffer[0]*fSinRoll*fSinPitch+MagBuffer[1]*fCosRoll-MagBuffer[1]*fSinRoll*fCosPitch;
