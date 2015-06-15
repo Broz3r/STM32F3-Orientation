@@ -26,12 +26,19 @@
 \contentsline {paragraph}{}{6}
 \contentsline {section}{\numberline {2.2}Impl\'ementation sur la carte STM32F3}{6}
 \contentsline {paragraph}{}{6}
-\contentsline {section}{\numberline {2.3}Interface utilisateur}{6}
+\contentsline {subsection}{\numberline {2.2.1}R\'ecup\'eration des donn\'ees des capteurs}{6}
 \contentsline {paragraph}{}{6}
-\contentsline {chapter}{\numberline {3}Am\'eliorations possibles}{7}
-\contentsline {section}{\numberline {3.1}Gestion des acc\'el\'erom\`etres}{7}
+\contentsline {paragraph}{}{6}
+\contentsline {paragraph}{Demo\_CompassConfig(void)}{6}
+\contentsline {paragraph}{Demo\_CompassReadAcc(float* pfData) \& Demo\_CompassReadMag (float* pfData)}{7}
+\contentsline {subsection}{\numberline {2.2.2}Traitements des donn\'ees}{7}
 \contentsline {paragraph}{}{7}
-\contentsline {section}{\numberline {3.2}Fiabilit\'e}{7}
+\contentsline {section}{\numberline {2.3}Interface utilisateur}{7}
 \contentsline {paragraph}{}{7}
-\contentsline {chapter}{Conclusion}{8}
+\contentsline {chapter}{\numberline {3}Am\'eliorations possibles}{8}
+\contentsline {section}{\numberline {3.1}Gestion des acc\'el\'erom\`etres}{8}
 \contentsline {paragraph}{}{8}
+\contentsline {section}{\numberline {3.2}Fiabilit\'e}{8}
+\contentsline {paragraph}{}{8}
+\contentsline {chapter}{Conclusion}{9}
+\contentsline {paragraph}{}{9}

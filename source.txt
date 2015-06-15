@@ -1,0 +1,11 @@
+ArduinoIMU project:
+http://theccontinuum.com/2012/09/24/arduino-imu-pitch-roll-from-accelerometer/#docs
+
+Calculate Roll Pitch and Heading angles :
+http://www.freescale.com/files/sensors/doc/app_note/AN3461.pdf
+
+ST Doc:
+http://www.st.com/web/catalog/tools/FM116/SC959/SS1532/PF254044
+
+Virtual COM Port STM32F3 :
+http://controlsoft.nmmu.ac.za/STM32F3-Discovery-Board/Example-programs/Virtual-COM-Port-(VCP)

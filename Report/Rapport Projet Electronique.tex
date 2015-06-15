@@ -85,7 +85,7 @@
 	
 	\subsection*{Calcul de l'orientation}
 	\paragraph{}
-	Pour connaître l'orientation de la centrale il nous faut connaître les angles de roulis, de tangage et de lacet (roll, pitch et heading en anglais) représentés sur la figure suivante :
+		Pour connaître l'orientation de la centrale il nous faut connaître les angles de roulis, de tangage et de lacet (roll, pitch et heading en anglais) représentés sur la figure suivante :
 	
 	\newpage
 	
@@ -95,7 +95,7 @@
 	\caption{Angles de roulis, tangage et lacet}
 	\end{figure}
 	
-	L'angle de roulis et de tangage sont calculables grâce aux composantes du vecteur accélération mesurées par accéléromètre de la carte notée $G_{Acc}=(G_{x}, G_{y}, G_{z})$ :
+		L'angle de roulis et de tangage sont calculables grâce aux composantes du vecteur accélération mesurées par accéléromètre de la carte notée $G_{Acc}=(G_{x}, G_{y}, G_{z})$ :
 	\begin{equation}Roll=\arctan\left(\frac{-G_x}{Gz}\right)\end{equation}
 	\begin{equation}Pitch=\arctan\left(\frac{G_y}{\sqrt{G_x^2+G_z^2}}\right)\end{equation}
 	
@@ -200,6 +200,28 @@
 
 	\section{Implémentation sur la carte STM32F3}
 	\paragraph{}
+	Les travaux réalisés sur la carte sont divisés en plusieurs points indépendants: la récupération des données des capteurs, leur traitement et la communication via la liaison série USB.\\
+	Le projet est à la base le projet de démonstration fournit par \textsc{STMicroelectronics} auquel on été retirés les exemples et fonctionnalité qui ne nous intéressaient pas et auquel ont été rajoutées des librairies permettant de réaliser certaines briques du programme.
+	
+	\subsection{Récupération des données des capteurs}
+	\paragraph{}
+	La première chose à faire avant de vouloir traiter une information est de la mesurer via un capteur puis de la récupérer pour l'utiliser plus tard dans les calculs.
+	
+	\paragraph{}
+	Les fonctions utilisées pour récupérer les données des capteurs sont déjà implémentées dans les exemples par \textsc{STMicroelectronics}. Nous utilisons ainsi \emph{Demo\_CompassConfig(void)} pour initialiser le capteur LSM303DLHC puis les fonctions \emph{Demo\_CompassReadAcc(float* pfData)} et \emph{Demo\_CompassReadMag (float pfData)} pour récupérer les données de l'accéléromètre et du magnétomètre.
+	
+	\paragraph{Demo\_CompassConfig(void)}
+	est la fonction qui est appelée pendant l'initialisation du programme et qui permet de configurer correctement les différents capteurs utilisés plus tard dans le programme.\\
+	Les paramètres peuvent allez du mode d'alimentation à l'échelle utiliser tout en passant par la configuration des filtres utilisés pour traiter les signaux des capteurs.
+	
+	\paragraph{Demo\_CompassReadAcc(float* pfData) \& Demo\_CompassReadMag (float* pfData)}
+	sont deux fonctions permettent de récupérer les informations des capteurs et de les stocker dans un pointer mis en paramètre. Ces fonctions permettent aussi la calibration des données en fonction du mode choisi à l'initialisation.
+
+  \subsection{Traitements des données}
+	
+	\paragraph{}
+	Une fois les données récupérer depuis les capteurs ils faut les traiter afin de calculer ce que nous cherchons: l'orientation de la centrale inertielle grâce à ses angles de roulis, de tangage et de lacet ainsi que sa position relative par rapport au référentiel terrestre.
+	
 
 	\section{Interface utilisateur}
 	\paragraph{}
