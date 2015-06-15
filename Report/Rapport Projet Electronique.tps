@@ -11,14 +11,14 @@ MaxPos.x=-1
 MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
-NormalPos.right=940
-NormalPos.bottom=773
+NormalPos.right=1087
+NormalPos.bottom=412
 Class=LaTeXView
 Document=Rapport Projet Electronique.tex
 
 [Frame0_View0,0]
-TopLine=42
-Cursor=1697
+TopLine=345
+Cursor=18234
 
 [SessionInfo]
 FrameCount=1

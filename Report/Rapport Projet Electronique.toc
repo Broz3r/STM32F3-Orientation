@@ -37,10 +37,12 @@
 \contentsline {paragraph}{}{8}
 \contentsline {section}{\numberline {2.3}Interface utilisateur}{8}
 \contentsline {paragraph}{}{8}
-\contentsline {chapter}{\numberline {3}Am\'eliorations possibles}{9}
-\contentsline {section}{\numberline {3.1}Gestion des acc\'el\'erom\`etres}{9}
-\contentsline {paragraph}{}{9}
-\contentsline {section}{\numberline {3.2}Fiabilit\'e}{9}
-\contentsline {paragraph}{}{9}
-\contentsline {chapter}{Conclusion}{10}
+\contentsline {paragraph}{}{8}
+\contentsline {paragraph}{}{8}
+\contentsline {chapter}{\numberline {3}Am\'eliorations possibles}{10}
+\contentsline {section}{\numberline {3.1}Impl\'ementation des m\'ethodes}{10}
 \contentsline {paragraph}{}{10}
+\contentsline {section}{\numberline {3.2}Communication Interface vers carte}{10}
+\contentsline {paragraph}{}{10}
+\contentsline {chapter}{Conclusion}{11}
+\contentsline {paragraph}{}{11}

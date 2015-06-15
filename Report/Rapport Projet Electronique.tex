@@ -261,12 +261,37 @@
 	
 	\section{Interface utilisateur}
 	\paragraph{}
+	L'interface utilisateur a été réalisée en \emph{C++} à l'aide du farmework \emph{Qt} qui permet une utilisation multiplateforme et une grande liberté de programmation tout en ayant une communauté très active.
+	
+	\paragraph{}
+	L'interface utilisateur permet la connexion à la liaison série initialisée par la carte. Cette connexion est soumise à différent paramètres défini par l'utilisateur lui même dans l'écran \emph{Settings}.
+	
+		\begin{figure}[h]
+	\centering
+		\includegraphics[scale=0.7]{settings.png}
+	\caption{Écran \emph{Settings}}
+	\end{figure}
+	
+	\paragraph{}
+	Si les paramètres rentré par l'utilisateur sont correct, il est alors possible de se connecter à la liaison série. Il faut tout fois que la liaison série ne soit pas déjà connecté à un autre programme, comme un hyper terminal, puisque la liaison série ne permet pas le multicast.\\
+	Une fois connectée, l'interface récupère les messages envoyé par la carte sur la liaison série et concatène les données pour les réinjecter dans les éléments de l'interface graphique.
+	
+	\newpage
+	
+	\begin{figure}[h]
+	\centering
+		\includegraphics[scale=0.7]{IHM.png}
+	\caption{Interface graphique}
+	\end{figure}
+	
+	Les angles de roulis, tangage et lacet sont indiqués par les afficheur LCD en haut de l'interface alors que la partie centrale permet quand à elle d'orienter un parallélépipède rectangle en fonction de l'orientation de la carte. Toute la partie 3D est réalisé à l'aide des librairies \emph{QtOpenGL} et \emph{QGLWidget}.
+	
 	
 \chapter{Améliorations possibles}
-	\section{Gestion des accéléromètres}
+	\section{Implémentation des méthodes}
 	\paragraph{}
 	
-	\section{Fiabilité}
+	\section{Communication Interface vers carte}
 	\paragraph{}
 		
 \chapter*{Conclusion}
