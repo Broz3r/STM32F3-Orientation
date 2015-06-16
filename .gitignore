@@ -1,0 +1,7 @@
+*.o
+STM32F3-Discovery/Project/Demonstration/MDK-ARM/Demo/usb_sil.crf
+*.d
+STM32F3-Discovery/Project/Demonstration/MDK-ARM/Demo/usb_sil.o
+STM32F3-Discovery/Project/Demonstration/MDK-ARM/Demo/usb_sil.o
+STM32F3-Discovery/Project/Demonstration/MDK-ARM/Demo/main.crf
+STM32F3-Discovery/Project/Demonstration/MDK-ARM/Demo/main.d
