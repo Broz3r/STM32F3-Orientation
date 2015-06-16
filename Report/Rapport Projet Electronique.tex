@@ -96,15 +96,15 @@
 	\end{figure}
 	
 		L'angle de roulis et de tangage sont calculables grâce aux composantes du vecteur accélération mesurées par accéléromètre de la carte notée $G_{Acc}=(G_{x}, G_{y}, G_{z})$ :
-	\begin{equation}Roll=\arctan\left(\frac{-G_x}{Gz}\right)\end{equation}
-	\begin{equation}Pitch=\arctan\left(\frac{G_y}{\sqrt{G_x^2+G_z^2}}\right)\end{equation}
+	\begin{equation}Roll=\arctan\left(\frac{G_y}{G_z}\right)\end{equation}
+	\begin{equation}Pitch=-\arctan\left(\frac{G_x}{\sqrt{G_y^2+G_z^2}}\right)\end{equation}
 	
 	\paragraph{}
 	L'angle de roulis (Roll) a une amplitude de $[-180; 180]$ et l'angle de tangage (Pitch) a une amplitude de $[-90; 90]$. Il n'est pas possible d'obtenir une amplitude de $360\degree$ sur les deux angles, il a donc été décidé de limiter l'angle de tangage sur une plage de $180\degree$.\\
 	Ces deux formules sont tirées de la théorie des angles d'Euler. La démonstration de ces formules est détaillée dans la documentation \emph{Tilt Sensing Using a Three-Axis Accelerometer} de \textsc{Freescale Semiconductor} dont la référence se trouve en \textsc{Annexe}.
 	
 	\paragraph{}
-	Pour calculer l'angle de lacet, il est nécessaire d'utiliser le magnétomètre de la carte car l'accéléromètre  seul ne nous permet pas d'aller plus loin. Nous récupérons les données du magnétomètre dans un vecteur $M = (M_x, M_y, M_z)$ ce qui nous permet de calculer les \emph{"`angles d'inclinaisons"'} aussi appelés \emph{tilted angles} :
+	Pour calculer l'angle de lacet, il est nécessaire d'utiliser le magnétomètre de la carte car l'accéléromètre seul ne nous permet pas d'aller plus loin. Nous récupérons les données du magnétomètre dans un vecteur $M = (M_x, M_y, M_z)$ ce qui nous permet de calculer les \emph{"`angles d'inclinaisons"'} aussi appelés \emph{tilted angles} :
 	\begin{equation}x_{tilted}=M_x\cos(Pitch) + M_z\sin(Pitch)\end{equation}
 	\begin{equation}y_{tilted}=M_x\sin(Roll)\sin(Pitch) + M_y\cos(Roll) - M_z\sin(Roll)\cos(Pitch)\end{equation}
 	
@@ -169,10 +169,10 @@
 		
 		\subsubsection*{Méthode de Simpson}
 		\paragraph{}
-		La méthode de Simpson utilise une approximation d'ordre 2 de $f$ grâce au polynôme quadratique $P$. Le polynôme représente une parabole entre $a$ et $b$ qui prend les même valeurs que $f$ aux points $a$, $b$ et $m=\frac{(a+b)}{2}$. On connait alors l'expression de cette parabole grâce à l'interpolation de Lagrange:
-		\begin{equation}P(x)=f(a)\frac{x-m)(x-b)}{(a-m)(a-b)} + f(m)\frac{(x-a)x-b)}{(m-a)(m-b)} + f(b)\frac{(x-a)(x-m)}{(b-a)(b-m)}\end{equation}
+		La méthode de Simpson utilise une approximation d'ordre 2 de $f$ grâce au polynôme quadratique $P$. Le polynôme représente une parabole entre $a$ et $b$ qui prend les même valeurs que $f$ aux points $a$, $b$ et $m=\frac{(a+b)}{2}$. On connaît alors l'expression de cette parabole grâce à l'interpolation de Lagrange:
+		\begin{equation}P(x)=f(a)\frac{(x-m)(x-b)}{(a-m)(a-b)} + f(m)\frac{(x-a)x-b)}{(m-a)(m-b)} + f(b)\frac{(x-a)(x-m)}{(b-a)(b-m)}\end{equation}
 		Le polynôme étant plus facile a intégrer on peut ainsi approximer l'intégrale de $f$ sur l'intervalle $[a, b]$ :
-		\begin{equation}\int_a^b{f(x)dx}\approx \int_a^b{P(x)dx} = \frac{b-a}{6}\left[f(a)+4f(\frac{a+b}{2}+f(b)\right]\end{equation}
+		\begin{equation}\int_a^b{f(x)dx}\approx \int_a^b{P(x)dx} = \frac{b-a}{6}\left[f(a)+4f\left(\frac{a+b}{2}\right)+f(b)\right]\end{equation}
 		
 		Ainsi il est possible d'approximer l'intégrale de l'accélération pour en déduire la vitesse, en rendant l'intervalle $[a, b]$ le plus petit possible et en effectuant la somme successive des approximations.
 	\paragraph{}
@@ -231,11 +231,20 @@
 	\caption{Fonction void ReadOrientation(float *pHeading, float *pRoll, float *pPitch)}
 	\end{figure}
 	
-	\subsubsection*{EulerMethode(float *pX, float *pY, float *pZ)}
-	C'est la fonction qui permet de retourner dans les pointeurs en paramètre les positions relatives de la carte en utilisant la méthode d'Euler.\\
-	Cette méthode n'a pas encore été implémentée.
+	Les calculs de les angles de roulis et de tangage fonctionne très bien et donnent des résultats fiables et utilisables. Le problème vient du calcule de l'angle de lacet qui n'est précis qu'à l'horizontal. Une fois la carte dans une orientation quelconque, la valeur calculée de l'angle n'est plus correcte et en peut alors plus être utilisée ensuite, l'erreur ce répercutant dans les couches supérieures.
 	
-	\subsubsection*{SimpsonMethode(float *pX, float *pY, float *pZ)}
+	\subsubsection*{EulerMethode(float *primitive, float *function, int delay)}
+	C'est la fonction qui permet de retourner dans le pointeur de la primitive en paramètre le calcul de cette primitive en fonction de sa fonction de référence \emph{function} et de la durée de entre deux mesure \emph{delay} par la méthode d'Euler :
+	
+	\begin{figure}[h]
+	\centering
+		\includegraphics[scale=0.7]{eulerMethode.png}
+	\caption{Fonction void EulerMethode(float *primitive, float *function, int delay)}
+	\end{figure}
+	
+	Cette fonction n'a pas été testée.
+	
+	\subsubsection*{SimpsonMethode}
 	C'est la fonction qui permet de retourner dans les pointeurs en paramètre les positions relatives de la carte en utilisant la méthode de Simpson.\\
 	Cette méthode n'a pas encore été implémentée.
 	
@@ -259,6 +268,12 @@
 	\paragraph{} Une fois la connexion établie entre les deux entités, on peut envoyer à travers la liaison série grâce à la fonction \emph{VCP\_PutStr(char* buffer)} où le buffer est une chaine de caractères contenant le message que l'on souhaite envoyer. \\
 	Dans notre cas, le protocole est le suivant : \emph{"$X: \%11.3f$   $Y: \%11.3f$   $Z: \%11.3f\backslash n$"} où \emph{\%11.3f} est un nombre flottant avec 3 chiffres avant et après la virgule. Ce protocole permet l'affichage des informations directement dans un hyper terminal comme \emph{Termite} mais aussi la concaténation des informations par un autre logiciel connaissant ce protocole, comme c'est le cas pour l'interface utilisateur.
 	
+		\begin{figure}[h]
+	\centering
+		\includegraphics[scale=0.5]{termite.png}
+	\caption{Hyper terminal}
+	\end{figure}
+	
 	\section{Interface utilisateur}
 	\paragraph{}
 	L'interface utilisateur a été réalisée en \emph{C++} à l'aide du farmework \emph{Qt} qui permet une utilisation multiplateforme et une grande liberté de programmation tout en ayant une communauté très active.
@@ -276,26 +291,39 @@
 	Si les paramètres rentré par l'utilisateur sont correct, il est alors possible de se connecter à la liaison série. Il faut tout fois que la liaison série ne soit pas déjà connecté à un autre programme, comme un hyper terminal, puisque la liaison série ne permet pas le multicast.\\
 	Une fois connectée, l'interface récupère les messages envoyé par la carte sur la liaison série et concatène les données pour les réinjecter dans les éléments de l'interface graphique.
 	
-	\newpage
-	
 	\begin{figure}[h]
 	\centering
-		\includegraphics[scale=0.7]{IHM.png}
+		\includegraphics[scale=0.4]{IHM.png}
 	\caption{Interface graphique}
 	\end{figure}
 	
 	Les angles de roulis, tangage et lacet sont indiqués par les afficheur LCD en haut de l'interface alors que la partie centrale permet quand à elle d'orienter un parallélépipède rectangle en fonction de l'orientation de la carte. Toute la partie 3D est réalisé à l'aide des librairies \emph{QtOpenGL} et \emph{QGLWidget}.
 	
 	
-\chapter{Améliorations possibles}
-	\section{Implémentation des méthodes}
+\chapter{Reste à faire et améliorations}
+	\section{Calcul de l'angle de lacet}
 	\paragraph{}
+	Il serait bien de réussir a corriger la mesure de l'angle de lacet. Cela peut se faire en intégrant les données du gyroscope pour retrouver la position angulaire autour de l'axe z.
+	\paragraph{} Toute fois cette méthode n'est pas non plus parfaite puisqu'elle est amputée d'une erreur de \emph{dérive} que le gyroscope ne peut mesurer. Il faudrait alors mettre en abîme les deux méthodes de calcul afin que l'une compense l'erreur de l'autre et vice et versa. 
+
+	\section{Implémentation et comparaison de la méthode de Simpson}
+	\paragraph{}
+	La méthode de Simpson n'a pas été implémentée par soucis de temps. Il s'agirait ici de l'implémenter pour ensuite la comparée avec la méthode d'Euler pour prouver qu'elle est plus performante.\\
+	Ceci dit, la mesure de l'angle de lacet et l'implémentation de la matrice de passage, cette comparaison est assez compromise.
+	
+	\paragraph{}
+	D'autre méthode pourrait être aussi implémentée, comme la méthode du filtre de Kalman ou le filtre de Madgwick utilisée dans les centrales inertielles industrielles.
 	
 	\section{Communication Interface vers carte}
 	\paragraph{}
+	On pourrait utiliser la liaison série dans le sens inverse. C'est-à-dire au lieu de faire du Broadcast pur et simple de l'information, l'interface utilisateur pourrait aussi écrire sur la liaison série et communiquer avec la carte pour par exemple lui demander d'utiliser une méthode plutôt qu'un autre ou modifier le temps de cycle de la carte.
 		
 \chapter*{Conclusion}
 \addcontentsline{toc}{chapter}{Conclusion}
 \paragraph{}
+Le projet permet actuellement de pouvoir visualiser l'orientation de la carte \emph{STM32F3} grâce à ces accéléromètres sur une interface graphique qui récupère les données via une liaison série USB.
+\paragraph{}
+Cela amorce les prémisses d'une centrale inertielle, mais comme nous l'avons vu, beaucoup de chemins et d'améliorations restent encore à faire, principalement en matière d'algorithme.\\
+La carte en elle même est capable de supporter la charge de travail d'une centrale inertielle complète, même si les temps de cycle sont parfois problématiques pour des méthodes trop peu précises.
 	
 \end{document}
