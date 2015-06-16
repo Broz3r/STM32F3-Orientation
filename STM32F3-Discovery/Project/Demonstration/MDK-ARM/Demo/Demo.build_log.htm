@@ -34,27 +34,21 @@ compiling main.c...
         CDC_Receive_DATA();                                                                                                                                             //start receiving data from Virtual COM Port
 ..\imu_devs.h(54): warning:  #1-D: last line of file ends without a newline
   #endif
-..\main.c(188): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\main.c(183): warning:  #1035-D: single-precision operand implicitly converted to double-precision
                 fAccBuffer[i] = AccBuffer[i] * 
 lpha + (fAccBuffer[i] * (1.0 - 
 lpha));
-..\main.c(191): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\main.c(186): warning:  #1035-D: single-precision operand implicitly converted to double-precision
                 fMagBuffer[i] = MagBuffer[i] * 
 lpha + (fMagBuffer[i] * (1.0 - 
 lpha));
-..\main.c(180): warning:  #550-D: variable "HeadingValue" was set but never used
+..\main.c(175): warning:  #550-D: variable "HeadingValue" was set but never used
         float HeadingValue = 0.0f;
 ..\main.c: 6 warnings, 0 errors
-compiling imu_devs.c...
-..\imu_devs.h(54): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\imu_devs.c(371): warning:  #1-D: last line of file ends without a newline
-  }
-..\imu_devs.c: 2 warnings, 0 errors
 linking...
 Program Size: Code=17388 RO-data=696 RW-data=460 ZI-data=1236  
 FromELF: creating hex file...
-".\Demo\Demo.axf" - 0 Error(s), 8 Warning(s).
+".\Demo\Demo.axf" - 0 Error(s), 6 Warning(s).
 
 <h2>Collection of Component include folders:</h2>
   D:\Dev\Project\STM32F3-Orientation\STM32F3-Discovery\Project\Demonstration\MDK-ARM\RTE

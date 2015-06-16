@@ -131,9 +131,6 @@ int main(void)
 	}
 }
 
-
-
-
 /*********************************************************************************************
 Function name   : init
 Author 					: Paul Mougin
@@ -152,8 +149,6 @@ void init(void)
 	InitAccAndMag();		//initialize the compass
 	InitGyro();			//initialize the gyroscope
 }
-
-
 
 /*********************************************************************************************
 Function name   : ReadOrientation
@@ -201,7 +196,7 @@ void ReadOrientation(float *pHeading, float *pRoll, float *pPitch)
   fTiltedX = fMagBuffer[0]*cosRoll+fMagBuffer[2]*sinPitch;
   fTiltedY = fMagBuffer[0]*sinRoll*sinPitch + fMagBuffer[1]*cosRoll - fMagBuffer[2]*sinRoll*cosPitch;
       
-	HeadingValue = atan2f((float)fTiltedY,(float)fTiltedX);
+	HeadingValue = atan2f(fTiltedY,fTiltedX);
 	
 	 // We cannot correct for tilt over 40 degrees with this alg, if the board is tilted as such, return 0.
   if(RollAng > 0.78f || RollAng < -0.78f || PitchAng > 0.78f || PitchAng < -0.78f)
@@ -214,6 +209,49 @@ void ReadOrientation(float *pHeading, float *pRoll, float *pPitch)
 	*pPitch = PitchAng*180/PI;
 }
 
+/*********************************************************************************************
+Function name   : EulerMethode
+Author 					: Paul Mougin
+Date Modified   : 16/06/2015
+Compiler        : Keil ARM-MDK (uVision V4.70.0.0)
+
+Description			: Calculate the primitive with Euler Methode
+
+Special Note(s) : NONE
+
+Parameters			: 	*primitive 	- reference to the primitive
+										*function		-	function to integrate
+										delay				- delay between two mesures
+Return value		: NONE
+*********************************************************************************************/
+void EulerMethode(float *primitive, float *function, int delay)
+{
+	int i;
+	for(i=0; i<3; i++)
+		primitive[i] += primitive[i] + function[i]*delay;
+}
+
+/*********************************************************************************************
+Function name   : SimpsonMethode
+Author 					: Paul Mougin
+Date Modified   : 16/06/2015
+Compiler        : Keil ARM-MDK (uVision V4.70.0.0)
+
+Description			: Calculate the primitive with Simpson Methode
+
+Special Note(s) : NONE
+
+Parameters			: 	*primitive 	- reference to the primitive
+										*function		-	function to integrate
+										delay				- delay between two mesures
+Return value		: NONE
+*********************************************************************************************/
+void SimpsonMethode(float *primitive, float *function, int delay)
+{
+	int i;
+	for(i=0; i<3; i++)
+		primitive[i] += primitive[i] + function[i]*delay;
+}
 // -------------------------------------------------------------------------------
 
 // Function to insert a timing delay of nTime
