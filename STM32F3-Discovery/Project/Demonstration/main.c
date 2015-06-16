@@ -210,7 +210,7 @@ void ReadOrientation(float *pHeading, float *pRoll, float *pPitch)
   }
  
 	
-	*pHeading	=	HeadingValue*180/PI;
+	*pHeading	=	0;
 	*pRoll = RollAng*180/PI;
 	*pPitch = PitchAng*180/PI;
 }

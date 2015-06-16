@@ -71,11 +71,11 @@ void MainWindow::readData()
     y = Y.toDouble();
     z = Z.toDouble();
 
-    ui->view->setXAngle((int)y);
+    ui->view->setXAngle((int)x);
     ui->XValue->display(x);
-    ui->view->setYAngle((int)z);
+    ui->view->setYAngle((int)-y);
     ui->YValue->display(y);
-    ui->view->setZAngle((int)x);
+    ui->view->setZAngle((int)z);
     ui->ZValue->display(z);
 
     ui->view->update();
