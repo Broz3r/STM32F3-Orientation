@@ -1,7 +1,7 @@
 .\demo\hw_config.o: ..\hw_config.c
 .\demo\hw_config.o: .\..\..\..\Libraries\CMSIS\Device\ST\STM32F30x\Include\stm32f30x.h
 .\demo\hw_config.o: ..\..\..\Libraries\CMSIS\Include\core_cm4.h
-.\demo\hw_config.o: C:\Dev\Keil 5\ARM\ARMCC\Bin\..\include\stdint.h
+.\demo\hw_config.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\demo\hw_config.o: ..\..\..\Libraries\CMSIS\Include\core_cmInstr.h
 .\demo\hw_config.o: ..\..\..\Libraries\CMSIS\Include\core_cmFunc.h
 .\demo\hw_config.o: ..\..\..\Libraries\CMSIS\Include\core_cm4_simd.h

@@ -42,7 +42,7 @@ void ReadOrientation(float *pHeading, float *pRoll, float *pPitch);
 #define PI                         (float)     3.14159265f
 #define alpha											 (float)		0.5
 	
-#define DELAY											 (int)			250								/*!< loop delay in ms */
+#define DELAY											 (int)			100								/*!< loop delay in ms */
 
 
 /* #global variables -----------------------------------------*/
@@ -179,16 +179,16 @@ void ReadOrientation(float *pHeading, float *pRoll, float *pPitch)
 	float fTiltedX, fTiltedY = 0.0f;
 	float HeadingValue = 0.0f;
 	
-	ReadMagnetometer(fMagBuffer);
-  ReadAccelerometer(fAccBuffer);
+	ReadMagnetometer(MagBuffer);
+  ReadAccelerometer(AccBuffer);
 
-//	//Low Pass Filter
-//		//AccBuffer
-//	for (i=0; i<3; i++)
-//		fAccBuffer[i] = AccBuffer[i] * alpha + (fAccBuffer[i] * (1.0 - alpha));
-//		//MagBuffer
-//	for (i=0; i<3; i++)
-//		fMagBuffer[i] = MagBuffer[i] * alpha + (fMagBuffer[i] * (1.0 - alpha));
+	//Low Pass Filter
+		//AccBuffer
+	for (i=0; i<3; i++)
+		fAccBuffer[i] = AccBuffer[i] * alpha + (fAccBuffer[i] * (1.0 - alpha));
+		//MagBuffer
+	for (i=0; i<3; i++)
+		fMagBuffer[i] = MagBuffer[i] * alpha + (fMagBuffer[i] * (1.0 - alpha));
 
   RollAng = atan2f(fAccBuffer[1], fAccBuffer[2]);
   PitchAng = -atan2f(fAccBuffer[0], sqrt(fAccBuffer[1]*fAccBuffer[1] + fAccBuffer[2]*fAccBuffer[2]));
@@ -207,8 +207,7 @@ void ReadOrientation(float *pHeading, float *pRoll, float *pPitch)
   if(RollAng > 0.78f || RollAng < -0.78f || PitchAng > 0.78f || PitchAng < -0.78f)
   {
     HeadingValue = 0;
-  }
- 
+  } 
 	
 	*pHeading	=	0;
 	*pRoll = RollAng*180/PI;

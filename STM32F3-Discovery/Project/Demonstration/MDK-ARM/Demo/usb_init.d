@@ -5,7 +5,7 @@
 .\demo\usb_init.o: .\..\usb_conf.h
 .\demo\usb_init.o: .\..\..\..\Libraries\CMSIS\Device\ST\STM32F30x\Include\stm32f30x.h
 .\demo\usb_init.o: ..\..\..\Libraries\CMSIS\Include\core_cm4.h
-.\demo\usb_init.o: C:\Dev\Keil 5\ARM\ARMCC\Bin\..\include\stdint.h
+.\demo\usb_init.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\demo\usb_init.o: ..\..\..\Libraries\CMSIS\Include\core_cmInstr.h
 .\demo\usb_init.o: ..\..\..\Libraries\CMSIS\Include\core_cmFunc.h
 .\demo\usb_init.o: ..\..\..\Libraries\CMSIS\Include\core_cm4_simd.h

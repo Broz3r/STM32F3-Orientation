@@ -2,7 +2,7 @@
 .\demo\main.o: ..\main.h
 .\demo\main.o: .\..\..\..\Libraries\CMSIS\Device\ST\STM32F30x\Include\stm32f30x.h
 .\demo\main.o: ..\..\..\Libraries\CMSIS\Include\core_cm4.h
-.\demo\main.o: C:\Dev\Keil 5\ARM\ARMCC\Bin\..\include\stdint.h
+.\demo\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\demo\main.o: ..\..\..\Libraries\CMSIS\Include\core_cmInstr.h
 .\demo\main.o: ..\..\..\Libraries\CMSIS\Include\core_cmFunc.h
 .\demo\main.o: ..\..\..\Libraries\CMSIS\Include\core_cm4_simd.h
@@ -32,7 +32,7 @@
 .\demo\main.o: .\..\..\..\Libraries\STM32F30x_StdPeriph_Driver\inc\stm32f30x_wwdg.h
 .\demo\main.o: .\..\..\..\Libraries\STM32F30x_StdPeriph_Driver\inc\stm32f30x_misc.h
 .\demo\main.o: .\..\..\..\Utilities\STM32F3_Discovery\stm32f3_discovery.h
-.\demo\main.o: C:\Dev\Keil 5\ARM\ARMCC\Bin\..\include\stdio.h
+.\demo\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\demo\main.o: .\..\..\..\Utilities\STM32F3_Discovery\stm32f3_discovery_lsm303dlhc.h
 .\demo\main.o: .\..\..\..\Utilities\STM32F3_Discovery\stm32f3_discovery_l3gd20.h
 .\demo\main.o: .\..\..\..\Libraries\STM32_USB-FS-Device_Driver\inc\usb_lib.h
@@ -48,8 +48,9 @@
 .\demo\main.o: .\..\..\..\Libraries\STM32_USB-FS-Device_Driver\inc\usb_int.h
 .\demo\main.o: ..\usb_pwr.h
 .\demo\main.o: ..\platform_config.h
-.\demo\main.o: C:\Dev\Keil 5\ARM\ARMCC\Bin\..\include\math.h
+.\demo\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\demo\main.o: ..\VCP_F3.c
-.\demo\main.o: C:\Dev\Keil 5\ARM\ARMCC\Bin\..\include\string.h
+.\demo\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\demo\main.o: ..\usb_desc.h
 .\demo\main.o: ..\usb_prop.h
+.\demo\main.o: ..\imu_devs.h

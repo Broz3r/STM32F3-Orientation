@@ -40,5 +40,6 @@
 ".\demo\usb_prop.o"
 ".\demo\usb_pwr.o"
 ".\demo\main.o"
+".\demo\imu_devs.o"
 --library_type=microlib --strict --scatter ".\Demo\Demo.sct"
 --summary_stderr --info summarysizes -o .\Demo\Demo.axf
