@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.6.8)  17 JUN 2015 12:53
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.6.8)  17 JUN 2015 13:18
 entering extended mode
 **Rapport*Projet*Electronique.tex
 ("D:\Dev\Project\STM32F3-Orientation\Report\Rapport Projet Electronique.tex"
@@ -517,32 +517,39 @@ Chapitre 3.
 
 ] [12
 
+]
+Annexe A.
+LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/scit' will be
+(Font)              scaled to size 10.0pt on input line 384.
+[13
+
 ] ("D:\Dev\Project\STM32F3-Orientation\Report\Rapport Projet Electronique.aux") ) 
 Here is how much of TeX's memory you used:
- 5369 strings out of 493921
- 80556 string characters out of 3152089
+ 5372 strings out of 493921
+ 80642 string characters out of 3152089
  138386 words of memory out of 3000000
- 8560 multiletter control sequences out of 15000+200000
- 100359 words of font info for 54 fonts, out of 3000000 for 9000
+ 8561 multiletter control sequences out of 15000+200000
+ 104651 words of font info for 56 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  27i,8n,33p,522b,294s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Users/pmougin/AppData/Roaming/MiKTe
-X/2.9/fonts/enc/dvips/libertine/lbtn_naooyc.enc}{C:/Users/pmougin/AppData/Roaming/MiKTeX/2.9/fonts/enc/dvips/libertine/l
-btn_ncsllp.enc}{C:/Users/pmougin/AppData/Roaming/MiKTeX/2.9/fonts/enc/dvips/libertine/lbtn_7grukw.enc}{C:/Users/pmougin/
-AppData/Roaming/MiKTeX/2.9/fonts/enc/dvips/libertine/lbtn_76gpa5.enc}{C:/Users/pmougin/AppData/Roaming/MiKTeX/2.9/fonts/
-enc/dvips/libertine/lbtn_nh77jq.enc}{C:/Users/pmougin/AppData/Roaming/MiKTeX/2.9/fonts/enc/dvips/libertine/lbtn_25tcsq.e
-nc}{C:/Users/pmougin/AppData/Roaming/MiKTeX/2.9/fonts/enc/dvips/libertine/lbtn_omcwp2.enc}<C:/Users/pmougin/AppData/Roam
-ing/MiKTeX/2.9/fonts/type1/public/libertine/LinBiolinumT.pfb><C:/Users/pmougin/AppData/Roaming/MiKTeX/2.9/fonts/type1/pu
-blic/libertine/LinBiolinumTB.pfb><C:/Users/pmougin/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/libertine/LinLibertineT
-.pfb><C:/Users/pmougin/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/libertine/LinLibertineTB.pfb><C:/Users/pmougin/AppD
-ata/Roaming/MiKTeX/2.9/fonts/type1/public/libertine/LinLibertineTI.pfb><D:/LaTeX/MiKTeX/fonts/type1/public/amsfonts/cm/c
-mex10.pfb><D:/LaTeX/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><D:/LaTeX/MiKTeX/fonts/type1/public/amsfonts/cm/cmm
-i7.pfb><D:/LaTeX/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><D:/LaTeX/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pf
-b><D:/LaTeX/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><D:/LaTeX/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><
-D:/LaTeX/MiKTeX/fonts/type1/public/amsfonts/euler/eurm10.pfb>
-Output written on "Rapport Projet Electronique.pdf" (13 pages, 920022 bytes).
+X/2.9/fonts/enc/dvips/libertine/lbtn_iqbcqn.enc}{C:/Users/pmougin/AppData/Roaming/MiKTeX/2.9/fonts/enc/dvips/libertine/l
+btn_naooyc.enc}{C:/Users/pmougin/AppData/Roaming/MiKTeX/2.9/fonts/enc/dvips/libertine/lbtn_ncsllp.enc}{C:/Users/pmougin/
+AppData/Roaming/MiKTeX/2.9/fonts/enc/dvips/libertine/lbtn_7grukw.enc}{C:/Users/pmougin/AppData/Roaming/MiKTeX/2.9/fonts/
+enc/dvips/libertine/lbtn_76gpa5.enc}{C:/Users/pmougin/AppData/Roaming/MiKTeX/2.9/fonts/enc/dvips/libertine/lbtn_nh77jq.e
+nc}{C:/Users/pmougin/AppData/Roaming/MiKTeX/2.9/fonts/enc/dvips/libertine/lbtn_25tcsq.enc}{C:/Users/pmougin/AppData/Roam
+ing/MiKTeX/2.9/fonts/enc/dvips/libertine/lbtn_omcwp2.enc}<C:/Users/pmougin/AppData/Roaming/MiKTeX/2.9/fonts/type1/public
+/libertine/LinBiolinumT.pfb><C:/Users/pmougin/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/libertine/LinBiolinumTB.pfb>
+<C:/Users/pmougin/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/libertine/LinLibertineT.pfb><C:/Users/pmougin/AppData/Ro
+aming/MiKTeX/2.9/fonts/type1/public/libertine/LinLibertineTB.pfb><C:/Users/pmougin/AppData/Roaming/MiKTeX/2.9/fonts/type
+1/public/libertine/LinLibertineTI.pfb><D:/LaTeX/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><D:/LaTeX/MiKTeX/fonts/
+type1/public/amsfonts/cm/cmmi10.pfb><D:/LaTeX/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><D:/LaTeX/MiKTeX/fonts/typ
+e1/public/amsfonts/cm/cmr10.pfb><D:/LaTeX/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><D:/LaTeX/MiKTeX/fonts/type1/pu
+blic/amsfonts/cm/cmsy10.pfb><D:/LaTeX/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><D:/LaTeX/MiKTeX/fonts/type1/publi
+c/amsfonts/euler/eurm10.pfb>
+Output written on "Rapport Projet Electronique.pdf" (14 pages, 927976 bytes).
 PDF statistics:
- 127 PDF objects out of 1000 (max. 8388607)
+ 133 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  46 words of extra memory for PDF output out of 10000 (max. 10000000)
 
