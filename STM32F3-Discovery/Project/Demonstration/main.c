@@ -215,20 +215,30 @@ Author 					: Paul Mougin
 Date Modified   : 16/06/2015
 Compiler        : Keil ARM-MDK (uVision V4.70.0.0)
 
-Description			: Calculate the primitive with Euler Methode
+Description			: Calculate the position from acceleration with Euler Methode
 
-Special Note(s) : NONE
+Special Note(s) : Assumming original speed and original position are both null.
 
-Parameters			: 	*primitive 	- reference to the primitive
-										*function		-	function to integrate
-										delay				- delay between two mesures
+Parameters			: 	*AccBuffer 		- reference to acceleration buffer
+										*PosBuffer		-	reference to position buffer
+										delay					- delay between two mesures
 Return value		: NONE
 *********************************************************************************************/
-void EulerMethode(float *primitive, float *function, int delay)
+void EulerCalcul(float *primitive, float *function, int delay)
 {
 	int i;
 	for(i=0; i<3; i++)
 		primitive[i] += primitive[i] + function[i]*delay;
+}
+
+void EulerMethode(float *AccBuffer, float *PosBuffer, int delay)
+{
+	float SpeedBuffer[3] = {0.0f};
+	float TMPBuffer[3] = {0.0f};
+	EulerCalcul(SpeedBuffer, AccBuffer, DELAY);
+	EulerCalcul(TMPBuffer, SpeedBuffer, DELAY);
+	
+	PosBuffer = TMPBuffer;
 }
 
 /*********************************************************************************************
@@ -241,16 +251,48 @@ Description			: Calculate the primitive with Simpson Methode
 
 Special Note(s) : NONE
 
-Parameters			: 	*primitive 	- reference to the primitive
-										*function		-	function to integrate
-										delay				- delay between two mesures
+Parameters			: NONE
 Return value		: NONE
 *********************************************************************************************/
-void SimpsonMethode(float *primitive, float *function, int delay)
+void SimpsonMethode()
 {
-	int i;
-	for(i=0; i<3; i++)
-		primitive[i] += primitive[i] + function[i]*delay;
+	//TO DO
+}
+
+/*********************************************************************************************
+Function name   : BaseChangement
+Author 					: Paul Mougin
+Date Modified   : 16/06/2015
+Compiler        : Keil ARM-MDK (uVision V4.70.0.0)
+
+Description			: Calculate the position in the absolute base
+
+Special Note(s) : NONE
+
+Parameters			: 	*posBoard 			- reference to position vector in the board base
+										*posAbsolute		-	reference to position vector in absolute base
+										roll						- angle around x axis
+										pitch						- angle around y axis
+										yaw							- angle around z axis
+Return value		: NONE
+*********************************************************************************************/
+void BaseChangement(float *posBoard, float *posAbsolute, float roll, float pitch, float yaw)
+{
+	float X, Y, Z;
+	X = cos(yaw)*cos(pitch)*posBoard[0] 
+		+ (-sin(yaw)*cos(roll)+cos(yaw)*sin(pitch)*sin(roll))*posBoard[1]
+		+ (sin(yaw)*sin(roll)+cos(yaw)*sin(pitch)*cos(roll))*posBoard[2];
+	
+	Y = sin(yaw)*cos(pitch)*posBoard[0] 
+		+ (cos(yaw)*cos(roll)+sin(yaw)*sin(pitch)*sin(roll))*posBoard[1]
+		+ (-cos(yaw)*sin(roll)+sin(yaw)*sin(pitch)*cos(roll))*posBoard[2];
+	
+	Z = -sin(pitch)*posBoard[0] 
+		+ cos(pitch)*sin(roll)*posBoard[1]
+		+ cos(pitch)*cos(roll)*posBoard[2];
+	
+	float TMPBuffer[3] = {X,Y,Z};
+	posAbsolute = TMPBuffer;
 }
 // -------------------------------------------------------------------------------
 
