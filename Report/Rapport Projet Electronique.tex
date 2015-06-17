@@ -233,13 +233,15 @@
 	
 	Les calculs de les angles de roulis et de tangage fonctionne très bien et donnent des résultats fiables et utilisables. Le problème vient du calcule de l'angle de lacet qui n'est précis qu'à l'horizontal. Une fois la carte dans une orientation quelconque, la valeur calculée de l'angle n'est plus correcte et en peut alors plus être utilisée ensuite, l'erreur ce répercutant dans les couches supérieures.
 	
-	\subsubsection*{EulerMethode(float *primitive, float *function, int delay)}
-	C'est la fonction qui permet de retourner dans le pointeur de la primitive en paramètre le calcul de cette primitive en fonction de sa fonction de référence \emph{function} et de la durée de entre deux mesure \emph{delay} par la méthode d'Euler :
+	\newpage
+	
+	\subsubsection*{EulerMethode(float *AccBuffer, float *PosBuffer, int delay)}
+	C'est la fonction qui permet de retourner le vecteur position de la carte en fonction du vecteur accélération en utilisant la méthode d'Euler. Pour ce faire il faut aussi mettre en paramètre le temps de délais entre deux mesures et faire l'hypothèse que les conditions initiales au début de la mesure sont nulle (position et vitesse).
 	
 	\begin{figure}[h]
 	\centering
 		\includegraphics[scale=0.7]{eulerMethode.png}
-	\caption{Fonction void EulerMethode(float *primitive, float *function, int delay)}
+	\caption{Fonction void EulerMethode(float *AccBuffer, float *PosBuffer, int delay)}
 	\end{figure}
 	
 	Cette fonction n'a pas été testée.
@@ -247,6 +249,15 @@
 	\subsubsection*{SimpsonMethode}
 	C'est la fonction qui permet de retourner dans les pointeurs en paramètre les positions relatives de la carte en utilisant la méthode de Simpson.\\
 	Cette méthode n'a pas encore été implémentée.
+	
+	\subsubsection*{Basechangement(float *posBoard, float *posAbsolute, float roll, float pitch, float yaw)}
+	Cette fonction permet d'effectuer le changement de repère du vecteur position de la carte et ainsi calculer la position de la carte dans le repère absolu connaissant son déplacement dans son repère propre et les angles de roulis, tangage et lacet de la carte.
+	
+	\begin{figure}[h]
+	\centering
+		\includegraphics[scale=0.7]{baseChangement.png}
+	\caption{Fonction void Basechangement(float *posBoard, float *posAbsolute, float roll, float pitch, float yaw)}
+	\end{figure}
 	
 	\subsection{Communication série}
 	Une fois toutes les données calculées, il faut les afficher à l'utilisateur. La carte ne déposant d'aucun affichage intégré, mis à part ses LED, ce qui rend l'affichage pas vraiment évident, il faut communiquer ces données à un autre appareil - comme un PC - qui pourra les afficher.
@@ -271,7 +282,7 @@
 		\begin{figure}[h]
 	\centering
 		\includegraphics[scale=0.5]{termite.png}
-	\caption{Hyper terminal}
+	\caption{Hyper terminal affichant les valeurs des angles calculés par la carte}
 	\end{figure}
 	
 	\section{Interface utilisateur}
@@ -312,7 +323,7 @@
 	Ceci dit, la mesure de l'angle de lacet et l'implémentation de la matrice de passage, cette comparaison est assez compromise.
 	
 	\paragraph{}
-	D'autre méthode pourrait être aussi implémentée, comme la méthode du filtre de Kalman ou le filtre de Madgwick utilisée dans les centrales inertielles industrielles.
+	D'autre méthode pourraient être aussi implémentées, comme la méthode du filtre de Kalman ou le filtre de Madgwick qui sont des méthode notamment utilisées dans les centrales inertielles industrielles.
 	
 	\section{Communication Interface vers carte}
 	\paragraph{}

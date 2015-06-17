@@ -33,21 +33,21 @@
 \contentsline {paragraph}{}{7}
 \contentsline {subsection}{\numberline {2.2.3}Communication s\'erie}{8}
 \contentsline {paragraph}{}{8}
-\contentsline {paragraph}{}{8}
-\contentsline {paragraph}{}{8}
+\contentsline {paragraph}{}{9}
+\contentsline {paragraph}{}{9}
 \contentsline {section}{\numberline {2.3}Interface utilisateur}{9}
 \contentsline {paragraph}{}{9}
 \contentsline {paragraph}{}{9}
 \contentsline {paragraph}{}{9}
-\contentsline {chapter}{\numberline {3}Reste \`a faire et am\'eliorations}{10}
-\contentsline {section}{\numberline {3.1}Calcul de l'angle de lacet}{10}
-\contentsline {paragraph}{}{10}
-\contentsline {paragraph}{}{10}
-\contentsline {section}{\numberline {3.2}Impl\'ementation et comparaison de la m\'ethode de Simpson}{10}
-\contentsline {paragraph}{}{10}
-\contentsline {paragraph}{}{10}
-\contentsline {section}{\numberline {3.3}Communication Interface vers carte}{10}
-\contentsline {paragraph}{}{10}
-\contentsline {chapter}{Conclusion}{11}
+\contentsline {chapter}{\numberline {3}Reste \`a faire et am\'eliorations}{11}
+\contentsline {section}{\numberline {3.1}Calcul de l'angle de lacet}{11}
 \contentsline {paragraph}{}{11}
 \contentsline {paragraph}{}{11}
+\contentsline {section}{\numberline {3.2}Impl\'ementation et comparaison de la m\'ethode de Simpson}{11}
+\contentsline {paragraph}{}{11}
+\contentsline {paragraph}{}{11}
+\contentsline {section}{\numberline {3.3}Communication Interface vers carte}{11}
+\contentsline {paragraph}{}{11}
+\contentsline {chapter}{Conclusion}{12}
+\contentsline {paragraph}{}{12}
+\contentsline {paragraph}{}{12}
