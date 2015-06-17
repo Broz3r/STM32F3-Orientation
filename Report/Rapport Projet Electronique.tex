@@ -67,7 +67,7 @@
 	Cet instrument de mesure est encore utilisé dans tous les avions de ligne pour compenser l'imprécision des systèmes satellitaires comme le GPS.
 	
 	\paragraph{}
-	La précision d'une centrale inertielle varie en fonction de la précision des capteurs (accéléromètres et gyroscopes) utilisés mais aussi en fonction de l'algorithme de calcul utilisé pour traiter les données.
+	La précision d'une centrale inertielle varie en fonction de plusieurs paramètres: la précision et la calibration des capteurs (accéléromètres et gyroscopes) utilisés mais aussi en fonction de l'algorithme de calcul utilisé pour traiter les données.
 	
 	\section{Considérations théoriques}
 	\subsection*{Calcul de la position}
@@ -206,24 +206,24 @@
 	\section{Implémentation sur la carte STM32F3}
 	\paragraph{}
 	Les travaux réalisés sur la carte sont divisés en plusieurs points indépendants: la récupération des données des capteurs, leur traitement et la communication via la liaison série USB.\\
-	Le projet est à la base le projet de démonstration fournit par \textsc{STMicroelectronics} auquel ont été retirés les exemples et fonctionnalités qui ne nous intéressaient pas et auquel ont été rajoutées des librairies permettant de réaliser certaines briques du programme comme la librairie VCOM.
+	Le projet est à la base le projet de démonstration fournit par \textsc{STMicroelectronics}, auquel ont été retirés les exemples et fonctionnalités qui ne nous intéressaient pas, et auquel ont été rajoutées des librairies permettant de réaliser certaines briques du programme, comme la librairie VCOM.
 	
 	\subsection{Récupération des données des capteurs}
 	\paragraph{}
-	La première chose à faire avant de vouloir traiter une information est de la mesurer via un capteur puis de la récupérer pour l'utiliser plus tard dans les calculs.
+	Avant de vouloir traiter une information, il est important de la mesurer avec précision via un capteur, puis de la stocker en mémoire pour l'utiliser plus tard dans les calculs.
 	
 	\paragraph{}
 	Les fonctions utilisées pour récupérer les données des capteurs sont déjà implémentées dans les exemples par \textsc{STMicroelectronics}. Nous utilisons ainsi \emph{InitAccAndMag(void)} pour initialiser le capteur LSM303DLHC puis les fonctions \emph{ReadAccelerometer(float* pfData)} et \emph{ReadMagnetometer(float pfData)} pour récupérer les données de l'accéléromètre et du magnétomètre. C'est fonction sont détaillée dans le fichier \emph{imu\_devs.c}.
 	
 	\subsubsection*{InitAccAndMag(void)}
-	C'est la fonction qui est appelée pendant l'initialisation du programme et qui permet de configurer correctement les différents capteurs utilisés plus tard dans le programme.\\
-	Les paramètres peuvent allez du mode d'alimentation à l'échelle utilisée tout en passant par la configuration du filtrage des signaux des capteurs.
+	C'est la fonction qui est appelée pendant l'initialisation du programme. Elle permet de configurer correctement les différents capteurs utilisés plus tard dans le programme.\\
+	Il est possible de jouer sur des paramètres comme le mode d'alimentation, l'échelle utilisée, ou encore la configuration du filtrage des signaux des capteurs.
 	
 	\subsubsection*{ReadAccelerometer(float* pfData) \& ReadMagnetometer(float* pfData)}
 	Ce sont deux fonctions permettent de récupérer les informations des capteurs et de les stocker dans un pointeur mis en paramètre. Ces fonctions permettent aussi la calibration des données en fonction du mode choisi à l'initialisation.
 	
 	\paragraph{}
-	Concernant le gyrozscope, le principe est exactement le même avec les fonctions \emph{InitGyro(void)} et \emph{ReadGyro(float* pfData)}.
+	Concernant le gyroscope, le principe est exactement le même avec les fonctions \emph{InitGyro(void)} et \emph{ReadGyro(float* pfData)}.
 
   \subsection{Traitements des données}
 	
@@ -247,7 +247,7 @@
 	\newpage
 	
 	\subsubsection*{EulerMethode(float *AccBuffer, float *PosBuffer, int delay)}
-	C'est la fonction qui permet de retourner le vecteur position de la carte en fonction du vecteur accélération en utilisant la méthode d'Euler. Pour ce faire il faut aussi mettre en paramètre le temps de délais entre deux mesures et faire l'hypothèse que les conditions initiales au début de la mesure sont nulles (vitesse et position).
+	C'est la fonction qui permet de retourner le vecteur position de la carte en fonction du vecteur accélération en utilisant la méthode d'Euler. Pour ce faire il faut aussi mettre en paramètre le temps de délais entre deux mesures, et faire l'hypothèse que les conditions initiales au début de la mesure sont nulles (vitesse et position).
 	
 	\begin{figure}[h]
 	\centering
@@ -262,7 +262,7 @@
 	Cette méthode n'a pas été implémentée.
 	
 	\subsubsection*{Basechangement(float *posBoard, float *posAbsolute, float roll, float pitch, float yaw)}
-	Cette fonction permet d'effectuer le changement de repère du vecteur position de la carte et ainsi calculer la position de la carte dans le repère absolu connaissant son déplacement dans son repère propre et les angles de roulis, tangage et lacet de la carte.
+	Cette fonction permet d'effectuer le changement de repère du vecteur position de la carte. Elle calcule la position de la carte dans le repère absolu connaissant son déplacement dans son repère propre et les angles de roulis, tangage et lacet de la carte.
 	
 	\begin{figure}[h]
 	\centering
@@ -275,7 +275,7 @@
 	
 	\paragraph{}
 	Avant de parler d'une quelconque interface Homme-Machine, il est donc important de transmettre correctement ces données via une liaison série de type Virtual COM entre le port USB-USER de la carte et un port USB d'un ordinateur.\\
-	La librairie permettant d'envoyer et de recevoir des message à travers une liaison série est aussi une librairie créée et mise à disposition par \textsc{STMicroelectronics} dans son projet de démonstration. \\
+	La librairie permettant d'envoyer et de recevoir des message à travers une liaison série est également mise à disposition par \textsc{STMicroelectronics} dans le projet de démonstration. \\
 	
 	\paragraph{}
 	En connectant le port USB-USER de la carte à un PC, ce dernier doit installer le bon périphérique et ainsi reconnaître un port de communication VCP. Pour ce connecter à ce port, il faut que la liaison soit effective entre la carte et le PC, que la liaison soit initialisé du côté de la carte et que du côté du PC, on se connecte au port de communication alloué avec les bons paramètres, à savoir :
@@ -304,7 +304,7 @@
 	
 	\section{Interface utilisateur}
 	\paragraph{}
-	L'interface utilisateur a été réalisée en \emph{C++} à l'aide du framework \emph{Qt} qui permet une utilisation multiplateforme et une grande liberté de programmation tout en ayant une communauté très active.
+	L'interface utilisateur a été réalisée en \emph{C++}, à l'aide du framework \emph{Qt}. Cette solution permet une utilisation multiplateforme de l'application, une grande liberté de programmation ainsi qu'une communauté très active.
 	
 	\paragraph{}
 	L'interface utilisateur permet la connexion à la liaison série initialisée par la carte. Cette connexion est soumise à différent paramètres défini par l'utilisateur lui même dans l'écran \emph{Settings}.
@@ -330,7 +330,7 @@
 	\paragraph{}
 	L'ensemble des codes sources est disponible sur un \emph{repository} \emph{GitHub} dont le lien est donné en \textsc{Annexe}.
 	
-\chapter{Reste à faire et améliorations}
+\chapter{Ce qu'il reste à faire et améliorations}
 	\section{Calcul de l'angle de lacet}
 	\paragraph{}
 	Il serait bien de réussir a corriger la mesure de l'angle de lacet. Cela peut se faire en intégrant les données du gyroscope pour retrouver la position angulaire autour de l'axe z.
