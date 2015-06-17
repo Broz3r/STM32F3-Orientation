@@ -52,7 +52,7 @@
 	Le but de ce projet est de créer à l'aide d'une carte électronique STM32F3 Discovery une centrale inertielle en utilisant les accéléromètres et les gyroscopes embarqués dans la carte.
 	
 	\paragraph{}
-	Tous les calculs doivent être effectué par le microprocesseur STM32 sur la carte embarquée. Les informations de positions calculées seront alors envoyer à un terminal via une liaison série.
+	Tous les calculs doivent être effectués par le microcontrôleur STM32 sur la carte embarquée. Les informations de positions calculées seront alors envoyer à un terminal via une liaison série.
 	
 \chapter{Études préalables}
 	\section{Quid d'une centrale inertielle ?}
@@ -61,31 +61,31 @@
 \emph{	Une centrale à inertie ou centrale inertielle est un instrument utilisé en navigation, capable d'intégrer les mouvements d'un mobile (accélération et vitesse angulaire) pour estimer son orientation (angles de roulis, de tangage et de cap), sa vitesse linéaire et sa position. L'estimation de position est relative au point de départ ou au dernier point de recalage.}\footnote{définition de Wikipedia} \end{quote}
 	
 	\paragraph{}
-	En effet, une centrale inertielle est un appareil de mesure permettant de connaître la position de l'objet sur lequel elle est fixée sans avoir besoin d'informations extérieures. La seule connaissance de l'accélération linéaire selon trois axes ainsi que les vitesses angulaires autours de ces trois même axes permet de calculer la position relative de l'objet par rapport à sont point de départ.
+	En effet, une centrale inertielle est un appareil de mesure permettant de connaître la position de l'objet sur lequel elle est fixée sans avoir besoin d'informations extérieures. La seule connaissance de l'accélération linéaire selon trois axes ainsi que les vitesses angulaires autours de ces trois mêmes axes permet de calculer la position relative de l'objet par rapport à son point de départ.
 	
 	\paragraph{}
 	Cet instrument de mesure est encore utilisé dans tous les avions de ligne pour compenser l'imprécision des systèmes satellitaires comme le GPS.
 	
 	\paragraph{}
-	La précision d'une centrale inertielle varie en fonction de la précision des capteurs (accéléromètres et gyroscopes) utilisés mais aussi en fonction de algorithme de calcul utilisé pour traiter les données.
+	La précision d'une centrale inertielle varie en fonction de la précision des capteurs (accéléromètres et gyroscopes) utilisés mais aussi en fonction de l'algorithme de calcul utilisé pour traiter les données.
 	
 	\section{Considérations théoriques}
 	\subsection*{Calcul de la position}
 	\paragraph{}
 	Les capteurs nous remontent une accélération linéaire ainsi qu'une vitesse angulaire suivant les trois axes (que nous appellerons X, Y et Z) de la centrale inertielle.\\
-	Pour déterminer la position, le processeur doit déjà effectuer une intégration de l'accélération pour déterminer les vitesses linéaires par rapport au sol :
+	Pour déterminer la position, le processeur doit déjà effectuer une intégration de l'accélération pour déterminer les vitesses linéaires :
 	\begin{equation}\vec{V}=\int{\vec{\gamma}dt}\end{equation}
 	Puis pour déterminer la position, il doit encore intégrer la vitesse en prenant en compte la position de départ $ x_{0} $ :
 	\begin{equation}x=\int{\vec{V}dt}+x_0\end{equation}
 	
-	Il existe plusieurs algorithmes permettant de calculer les intégrales succéssives; méthodes plus ou moins complexes et plus ou moins précises qui seront explorées dans la partie \emph{Calcul de l'intégration}.
+	Il existe plusieurs algorithmes permettant de calculer les intégrales successives; algorithmes plus ou moins complexes et plus ou moins précis qui seront exposés dans la partie \emph{Calcul de l'intégration}.
 	\paragraph{}
-	Ces trois positions (une suivant chaque axe de la centrale) sont calculé par rapport au repère de la centrale et non le repère terrestre supposé galiléen. Or nous souhaitons connaître la position de l'objet dans un référentiel absolu.\\
-	Pour cela il nous faut faire un changement de base, mais avant tout, connaître l'orientation de la centrale inertielle dans le repère de base.
+	Ces trois positions (une suivant chaque axe de la centrale) sont calculées par rapport au repère de la centrale et non le repère terrestre supposé galiléen. Or nous souhaitons connaître la position de l'objet dans un référentiel absolu.\\
+	Pour cela il faut effectuer un changement de base, mais avant tout, connaître l'orientation de la centrale inertielle par rapport au sol.
 	
 	\subsection*{Calcul de l'orientation}
 	\paragraph{}
-		Pour connaître l'orientation de la centrale il nous faut connaître les angles de roulis, de tangage et de lacet (roll, pitch et heading en anglais) représentés sur la figure suivante :
+		Pour connaître l'orientation de la centrale nous avons besoin de connaître les angles de roulis, de tangage et de lacet (roll, pitch et heading - ou yaw - en anglais) représentés sur la figure suivante :
 	
 	\newpage
 	
@@ -95,12 +95,12 @@
 	\caption{Angles de roulis, tangage et lacet}
 	\end{figure}
 	
-		L'angle de roulis et de tangage sont calculables grâce aux composantes du vecteur accélération mesurées par accéléromètre de la carte notée $G_{Acc}=(G_{x}, G_{y}, G_{z})$ :
+		Les angles de roulis et de tangage sont calculables grâce aux composantes du vecteur accélération mesurées par l'accéléromètre de la carte. Nous les noterons $G_{Acc}=(G_{x}, G_{y}, G_{z})$ :
 	\begin{equation}Roll=\arctan\left(\frac{G_y}{G_z}\right)\end{equation}
 	\begin{equation}Pitch=-\arctan\left(\frac{G_x}{\sqrt{G_y^2+G_z^2}}\right)\end{equation}
 	
 	\paragraph{}
-	L'angle de roulis (Roll) a une amplitude de $[-180; 180]$ et l'angle de tangage (Pitch) a une amplitude de $[-90; 90]$. Il n'est pas possible d'obtenir une amplitude de $360\degree$ sur les deux angles, il a donc été décidé de limiter l'angle de tangage sur une plage de $180\degree$.\\
+	L'angle de roulis ($Roll$) a une amplitude de $[-180; 180]$ et l'angle de tangage ($Pitch$) a une amplitude de $[-90; 90]$. Il n'est pas possible d'obtenir une amplitude de $360\degree$ sur les deux angles en même temps, il a donc été décidé de limiter l'angle de tangage sur une plage de $180\degree$.\\
 	Ces deux formules sont tirées de la théorie des angles d'Euler. La démonstration de ces formules est détaillée dans la documentation \emph{Tilt Sensing Using a Three-Axis Accelerometer} de \textsc{Freescale Semiconductor} dont la référence se trouve en \textsc{Annexe}.
 	
 	\paragraph{}
@@ -111,10 +111,14 @@
 	Ces \emph{tilted angles} nous permettent ensuite de calculer l'angle de lacet (Heading) :
 	\begin{equation}Heading=\arctan\left(\frac{y_{tilted}}{x_{tilted}}\right)\end{equation}
 	
-	\subsection*{Calcul du changement de base}
-	Une fois l'orientation de la centrale par rapport au sol connue, il est possible de calculer le vecteur accélération, vitesse ou position de la centrale inertielle dans le repère absolu grâce à la théorie des \emph{angles d'Euler} :
+	Une autre méthode permet aussi de calculer les angles de notre carte. Il s'agit d'utiliser les mesures du gyroscope qui nous donne la valeur de la vitesse angulaire suivant les trois axes de notre carte. Comme pour la position linéaire de la carte, nous pouvons calculer la position angulaire ($\alpha$)en intégrant la vitesse angulaire ($\vec{\omega}$) :
 	
-	\paragraph{} Connaissant les angles $\theta$, $\phi$, $\psi$ respectivement autour de x, y et z on peut calculer la matrice de rotation $R$ :
+	\begin{equation}\alpha=\int{\vec{\omega}dt}+\alpha_0\end{equation}
+	
+	\subsection*{Calcul du changement de base}
+	Une fois l'orientation de la centrale par rapport au sol connue, il est possible de calculer les vecteurs accélération, vitesse et position de la centrale inertielle dans le repère absolu grâce à la théorie des \emph{angles d'Euler} :
+	
+	\paragraph{} Connaissant les angles $\theta$, $\phi$, $\psi$ respectivement autour de x, y et z, il est possible de calculer la matrice de rotation $R$ :
 
 	\begin{equation}R=
 \begin{pmatrix}
@@ -149,34 +153,35 @@
 		Ce qui permet ensuite, connaissant le vecteur position $POS$ $\begin{pmatrix}X\\Y\\Z\end{pmatrix}$ dans le repère de la centrale de calculer le vecteur position $POS'$ $\begin{pmatrix}X'\\Y'\\Z'\end{pmatrix}$ dans le repère absolu :
 		
 		\begin{equation}
-		POS' = R \cdot POS
+		POS' = POS \cdot R
 		\end{equation}
 		
 		\subsection*{Calcul de l'intégration}
 		\paragraph{}
-		comme dit plus haut, il existe plusieurs méthodes de calcul des intégrales certaines plus complexes et plus précises que d'autres. Nous allons en exposer deux :
+		Comme dit précédemment, il existe plusieurs méthodes de calcul des intégrales, certaines plus complexes et plus précises que d'autres. Nous allons en exposer deux :
 		\subsubsection*{La méthode d'Euler}
 		\paragraph{}
-		La méthode d'Euler est une méthode numérique élémentaire de résolution d'équation différentielles du premier ordre. Elle consiste sur un intervalle de temps le plus court possible d'approximer une courbe grâce à ça dérivée.
+		La méthode d'Euler est une méthode numérique élémentaire de résolution d'équations différentielles du premier ordre. Elle consiste sur un intervalle de temps le plus court possible d'approximer une courbe grâce à ça dérivée.
 		\paragraph{}
-		On sait par la théorie de la dérivation que pour n'importe quelle fonction $f(x)$ dont la primitive est $F(x)$ sur un intervalle défini on a :
+		Nous savons par la théorie de la dérivation que pour n'importe quelle fonction $f(x)$ dont la primitive est $F(x)$ sur un intervalle défini :
 		\begin{equation}\lim_{h \to 0}\frac{F(x+h)-F(x)}{h}=f(x)\end{equation}
 		
-		aussi par conséquent si $h$ est très petit il est possible de calculer la Primitive de $f(x)$ par récurrence :
+		Aussi, par conséquent, si $h$ est très petit, il est possible de calculer la primitive de $f(x)$ par récurrence :
 		\begin{equation}F(x+h)\approx F(x) + f(x)h\end{equation}
 		
-		Cette méthode très simpliste permet d'approximer l'intégration de manière assez grossière. L'erreur de cette méthode est d'ordre 2 soit $o(h^2)$ ce qui est assez élevé. Cette erreur est d'autant plus élevé lorsque l'on pratique cette méthode deux fois à la suite comme c'est le cas pour la centrale inertielle.
+		Cette méthode très simpliste permet d'approximer l'intégration de manière assez grossière. L'erreur de cette méthode est d'ordre 2 soit $o(h^2)$ ce qui est assez élevé. Cette erreur est d'autant plus élevée lorsque cette méthode est appliquée deux fois à la suite comme c'est le cas pour le calcul de la position depuis l'accélération.
 		
 		\subsubsection*{Méthode de Simpson}
 		\paragraph{}
 		La méthode de Simpson utilise une approximation d'ordre 2 de $f$ grâce au polynôme quadratique $P$. Le polynôme représente une parabole entre $a$ et $b$ qui prend les même valeurs que $f$ aux points $a$, $b$ et $m=\frac{(a+b)}{2}$. On connaît alors l'expression de cette parabole grâce à l'interpolation de Lagrange:
 		\begin{equation}P(x)=f(a)\frac{(x-m)(x-b)}{(a-m)(a-b)} + f(m)\frac{(x-a)x-b)}{(m-a)(m-b)} + f(b)\frac{(x-a)(x-m)}{(b-a)(b-m)}\end{equation}
-		Le polynôme étant plus facile a intégrer on peut ainsi approximer l'intégrale de $f$ sur l'intervalle $[a, b]$ :
+		
+		Un polynôme étant plus facile à intégrer nous pouvons ainsi approximer l'intégrale de $f$ sur l'intervalle $[a, b]$ :
 		\begin{equation}\int_a^b{f(x)dx}\approx \int_a^b{P(x)dx} = \frac{b-a}{6}\left[f(a)+4f\left(\frac{a+b}{2}\right)+f(b)\right]\end{equation}
 		
-		Ainsi il est possible d'approximer l'intégrale de l'accélération pour en déduire la vitesse, en rendant l'intervalle $[a, b]$ le plus petit possible et en effectuant la somme successive des approximations.
+		Ainsi il est possible d'approximer l'intégrale de l'accélération pour en déduire la vitesse, en rendant l'intervalle $[a, b]$ le plus petit possible et en effectuant la somme successive de ces approximations.
 	\paragraph{}
-	Une méthode plus précise que la méthode d'Euler puisque sont erreur est d'ordre 4 soit $o(h^4)$ ce qui, concaténé à elle même laisse une erreur d'ordre 2, ce qui peut être suffisant pour notre centrale.
+	Une méthode plus précise que la méthode d'Euler puisque sont erreur est d'ordre 4 soit $o(h^4)$ ce qui, concaténée à elle même laisse une erreur d'ordre 2, ce qui peut être suffisant pour notre centrale.
 		
 
 
@@ -192,35 +197,38 @@
 	\end{figure}
 	
 	\paragraph{}
-	Cette carte d'évaluation est équipée d'un microprocesseur ARM Cortex-M4, 256 KB de mémoire Flash et 46 KB de mémoire RAM. La carte embarque un accéléromètre LSM303DLHC trois axes et un gyroscope L3GD20 trois axes. La carte est également équipée de LED de différente couleurs ainsi que de deux boutons poussoirs.
+	Cette carte d'évaluation est équipée d'un microprocesseur ARM Cortex-M4, 256 KB de mémoire Flash et 46 KB de mémoire RAM. La carte embarque un accéléromètre LSM303DLHC trois axes et un gyroscope L3GD20 trois axes. La carte est également équipée de LED de différentes couleurs ainsi que de deux boutons poussoirs (USER et RESET).
 	
 	\paragraph{}
-	Au niveau de la communication extérieur, la carte est équipée de deux port mini-USB. L'un, le ST-LINK/V2 permet de programmer et de débugger la carte à travers un logiciel dédié (nous utiliserons \emph{Keil \micro Vision5} pour cela).\\
-	L'autre permet d'établir une communication avec d'autres éléments. nous l'utiliserons pour établir une liaison série entre la carte et un hyperterminal (\emph{Termite}) ou notre interface utilisateur développé en \emph{Qt}.
+	Au niveau de la communication extérieure, la carte est équipée de deux port mini-USB. L'un, le ST-LINK/V2 permet de programmer et de débugger la carte à travers un logiciel dédié (nous utiliserons \emph{Keil \micro Vision5} pour cela).\\
+	L'autre permet d'établir une communication avec d'autres éléments que nous utiliserons pour établir une liaison série entre la carte et un hyper terminal (\emph{Termite}) ou notre interface utilisateur développée en \emph{Qt}.
 
 	\section{Implémentation sur la carte STM32F3}
 	\paragraph{}
 	Les travaux réalisés sur la carte sont divisés en plusieurs points indépendants: la récupération des données des capteurs, leur traitement et la communication via la liaison série USB.\\
-	Le projet est à la base le projet de démonstration fournit par \textsc{STMicroelectronics} auquel on été retirés les exemples et fonctionnalité qui ne nous intéressaient pas et auquel ont été rajoutées des librairies permettant de réaliser certaines briques du programme.
+	Le projet est à la base le projet de démonstration fournit par \textsc{STMicroelectronics} auquel ont été retirés les exemples et fonctionnalités qui ne nous intéressaient pas et auquel ont été rajoutées des librairies permettant de réaliser certaines briques du programme comme la librairie VCOM.
 	
 	\subsection{Récupération des données des capteurs}
 	\paragraph{}
 	La première chose à faire avant de vouloir traiter une information est de la mesurer via un capteur puis de la récupérer pour l'utiliser plus tard dans les calculs.
 	
 	\paragraph{}
-	Les fonctions utilisées pour récupérer les données des capteurs sont déjà implémentées dans les exemples par \textsc{STMicroelectronics}. Nous utilisons ainsi \emph{Demo\_CompassConfig(void)} pour initialiser le capteur LSM303DLHC puis les fonctions \emph{Demo\_CompassReadAcc(float* pfData)} et \emph{Demo\_CompassReadMag (float pfData)} pour récupérer les données de l'accéléromètre et du magnétomètre.
+	Les fonctions utilisées pour récupérer les données des capteurs sont déjà implémentées dans les exemples par \textsc{STMicroelectronics}. Nous utilisons ainsi \emph{InitAccAndMag(void)} pour initialiser le capteur LSM303DLHC puis les fonctions \emph{ReadAccelerometer(float* pfData)} et \emph{ReadMagnetometer(float pfData)} pour récupérer les données de l'accéléromètre et du magnétomètre. C'est fonction sont détaillée dans le fichier \emph{imu\_devs.c}.
 	
-	\subsubsection*{Demo\_CompassConfig(void)}
+	\subsubsection*{InitAccAndMag(void)}
 	C'est la fonction qui est appelée pendant l'initialisation du programme et qui permet de configurer correctement les différents capteurs utilisés plus tard dans le programme.\\
-	Les paramètres peuvent allez du mode d'alimentation à l'échelle utiliser tout en passant par la configuration des filtres utilisés pour traiter les signaux des capteurs.
+	Les paramètres peuvent allez du mode d'alimentation à l'échelle utilisée tout en passant par la configuration du filtrage des signaux des capteurs.
 	
-	\subsubsection*{Demo\_CompassReadAcc(float* pfData) \& Demo\_CompassReadMag (float* pfData)}
-	Ce sont deux fonctions permettent de récupérer les informations des capteurs et de les stocker dans un pointer mis en paramètre. Ces fonctions permettent aussi la calibration des données en fonction du mode choisi à l'initialisation.
+	\subsubsection*{ReadAccelerometer(float* pfData) \& ReadMagnetometer(float* pfData)}
+	Ce sont deux fonctions permettent de récupérer les informations des capteurs et de les stocker dans un pointeur mis en paramètre. Ces fonctions permettent aussi la calibration des données en fonction du mode choisi à l'initialisation.
+	
+	\paragraph{}
+	Concernant le gyrozscope, le principe est exactement le même avec les fonctions \emph{InitGyro(void)} et \emph{ReadGyro(float* pfData)}.
 
   \subsection{Traitements des données}
 	
 	\paragraph{}
-	Une fois les données récupérer depuis les capteurs ils faut les traiter afin de calculer ce que nous cherchons: l'orientation de la centrale inertielle grâce à ses angles de roulis, de tangage et de lacet ainsi que sa position relative par rapport au référentiel terrestre.
+	Une fois les données récupérées depuis les capteurs il faut les traiter afin de calculer ce que nous cherchons: l'orientation de la centrale inertielle grâce à ses angles de roulis, de tangage et de lacet; ainsi que sa position relative par rapport au référentiel terrestre.
 	
 	\subsubsection*{ReadOrientation(float *pHeading, float *pRoll, float *pPitch)} 
 	C'est la fonction qui permet de retourner dans les pointeurs en paramètres les angles d'orientation en effectuant les calculs détaillés dans la partie théorique :
@@ -231,12 +239,15 @@
 	\caption{Fonction void ReadOrientation(float *pHeading, float *pRoll, float *pPitch)}
 	\end{figure}
 	
-	Les calculs de les angles de roulis et de tangage fonctionne très bien et donnent des résultats fiables et utilisables. Le problème vient du calcule de l'angle de lacet qui n'est précis qu'à l'horizontal. Une fois la carte dans une orientation quelconque, la valeur calculée de l'angle n'est plus correcte et en peut alors plus être utilisée ensuite, l'erreur ce répercutant dans les couches supérieures.
+	L'utilisation d'un filtrage passe bas sur les données permet de lisser celles-ci les unes par rapports aux autres afin d'endiguer toute erreur de mesure du capteur.
+	
+	\paragraph{}
+	Les calculs des angles de roulis et de tangage fonctionne très bien et donnent des résultats fiables et utilisables. Le problème vient du calcul de l'angle de lacet qui n'est précis qu'à l'horizontal. Une fois la carte dans une orientation quelconque, la valeur calculée de l'angle n'est plus correcte et la donnée ne peut plus être utilisée ensuite, l'erreur se répercutant dans les couches supérieures de l'algorithme.
 	
 	\newpage
 	
 	\subsubsection*{EulerMethode(float *AccBuffer, float *PosBuffer, int delay)}
-	C'est la fonction qui permet de retourner le vecteur position de la carte en fonction du vecteur accélération en utilisant la méthode d'Euler. Pour ce faire il faut aussi mettre en paramètre le temps de délais entre deux mesures et faire l'hypothèse que les conditions initiales au début de la mesure sont nulle (position et vitesse).
+	C'est la fonction qui permet de retourner le vecteur position de la carte en fonction du vecteur accélération en utilisant la méthode d'Euler. Pour ce faire il faut aussi mettre en paramètre le temps de délais entre deux mesures et faire l'hypothèse que les conditions initiales au début de la mesure sont nulles (vitesse et position).
 	
 	\begin{figure}[h]
 	\centering
@@ -248,7 +259,7 @@
 	
 	\subsubsection*{SimpsonMethode}
 	C'est la fonction qui permet de retourner dans les pointeurs en paramètre les positions relatives de la carte en utilisant la méthode de Simpson.\\
-	Cette méthode n'a pas encore été implémentée.
+	Cette méthode n'a pas été implémentée.
 	
 	\subsubsection*{Basechangement(float *posBoard, float *posAbsolute, float roll, float pitch, float yaw)}
 	Cette fonction permet d'effectuer le changement de repère du vecteur position de la carte et ainsi calculer la position de la carte dans le repère absolu connaissant son déplacement dans son repère propre et les angles de roulis, tangage et lacet de la carte.
@@ -260,7 +271,7 @@
 	\end{figure}
 	
 	\subsection{Communication série}
-	Une fois toutes les données calculées, il faut les afficher à l'utilisateur. La carte ne déposant d'aucun affichage intégré, mis à part ses LED, ce qui rend l'affichage pas vraiment évident, il faut communiquer ces données à un autre appareil - comme un PC - qui pourra les afficher.
+	Une fois toutes les données calculées, il faut les afficher à l'utilisateur. La carte ne disposant d'aucun affichage intégré, mis à part ses LED - ce qui rend l'affichage pas vraiment évident - il faut communiquer ces données à un autre appareil - comme un PC - qui pourra les afficher.
 	
 	\paragraph{}
 	Avant de parler d'une quelconque interface Homme-Machine, il est donc important de transmettre correctement ces données via une liaison série de type Virtual COM entre le port USB-USER de la carte et un port USB d'un ordinateur.\\
@@ -276,8 +287,14 @@
 	\item Contrôle de flux : Non
 	\end{itemize}
 	
-	\paragraph{} Une fois la connexion établie entre les deux entités, on peut envoyer à travers la liaison série grâce à la fonction \emph{VCP\_PutStr(char* buffer)} où le buffer est une chaine de caractères contenant le message que l'on souhaite envoyer. \\
-	Dans notre cas, le protocole est le suivant : \emph{"$X: \%11.3f$   $Y: \%11.3f$   $Z: \%11.3f\backslash n$"} où \emph{\%11.3f} est un nombre flottant avec 3 chiffres avant et après la virgule. Ce protocole permet l'affichage des informations directement dans un hyper terminal comme \emph{Termite} mais aussi la concaténation des informations par un autre logiciel connaissant ce protocole, comme c'est le cas pour l'interface utilisateur.
+	\paragraph{} Une fois la connexion établie entre les deux entités, il est possible envoyer des messages à travers la liaison série grâce à la fonction \emph{VCP\_PutStr(char* buffer)} où le buffer est une chaine de caractères contenant le message que l'on souhaite envoyer.
+	Dans notre cas, le protocole est le suivant : 
+	\begin{equation}X: \%11.3f\qquad Y: \%11.3f\qquad Z: \%11.3f\backslash n\end{equation}
+	
+	où \emph{\%11.3f} est un nombre flottant avec 3 chiffres avant et après la virgule. 
+	
+	\paragraph{}
+	Ce protocole permet l'affichage des informations directement dans un hyper terminal comme \emph{Termite} mais aussi la concaténation des informations par un autre logiciel connaissant ce protocole, comme c'est le cas pour l'interface utilisateur.
 	
 		\begin{figure}[h]
 	\centering
@@ -287,7 +304,7 @@
 	
 	\section{Interface utilisateur}
 	\paragraph{}
-	L'interface utilisateur a été réalisée en \emph{C++} à l'aide du farmework \emph{Qt} qui permet une utilisation multiplateforme et une grande liberté de programmation tout en ayant une communauté très active.
+	L'interface utilisateur a été réalisée en \emph{C++} à l'aide du framework \emph{Qt} qui permet une utilisation multiplateforme et une grande liberté de programmation tout en ayant une communauté très active.
 	
 	\paragraph{}
 	L'interface utilisateur permet la connexion à la liaison série initialisée par la carte. Cette connexion est soumise à différent paramètres défini par l'utilisateur lui même dans l'écran \emph{Settings}.
@@ -299,8 +316,8 @@
 	\end{figure}
 	
 	\paragraph{}
-	Si les paramètres rentré par l'utilisateur sont correct, il est alors possible de se connecter à la liaison série. Il faut tout fois que la liaison série ne soit pas déjà connecté à un autre programme, comme un hyper terminal, puisque la liaison série ne permet pas le multicast.\\
-	Une fois connectée, l'interface récupère les messages envoyé par la carte sur la liaison série et concatène les données pour les réinjecter dans les éléments de l'interface graphique.
+	Si les paramètres rentrés par l'utilisateur sont correct, il est alors possible de se connecter à la liaison série. Il faut toutefois que la liaison série ne soit pas déjà connectée à un autre programme, comme un hyper terminal, puisque la liaison série ne permet pas le multicast.\\
+	Une fois connectée, l'interface récupère les messages envoyés par la carte sur la liaison série et concatène les données pour les réinjecter dans les éléments de l'interface graphique.
 	
 	\begin{figure}[h]
 	\centering
@@ -308,33 +325,37 @@
 	\caption{Interface graphique}
 	\end{figure}
 	
-	Les angles de roulis, tangage et lacet sont indiqués par les afficheur LCD en haut de l'interface alors que la partie centrale permet quand à elle d'orienter un parallélépipède rectangle en fonction de l'orientation de la carte. Toute la partie 3D est réalisé à l'aide des librairies \emph{QtOpenGL} et \emph{QGLWidget}.
+	Les angles de roulis, tangage et lacet sont indiqués par les afficheurs LCD en haut de l'interface alors que la partie centrale permet quand à elle d'orienter un parallélépipède rectangle en fonction de l'orientation de la carte. Toute la partie 3D est réalisée à l'aide des librairies \emph{QtOpenGL} et \emph{QGLWidget}.
 	
+	\paragraph{}
+	L'ensemble des codes sources est disponible sur un \emph{repository} \emph{GitHub} dont le lien est donné en \textsc{Annexe}.
 	
 \chapter{Reste à faire et améliorations}
 	\section{Calcul de l'angle de lacet}
 	\paragraph{}
 	Il serait bien de réussir a corriger la mesure de l'angle de lacet. Cela peut se faire en intégrant les données du gyroscope pour retrouver la position angulaire autour de l'axe z.
-	\paragraph{} Toute fois cette méthode n'est pas non plus parfaite puisqu'elle est amputée d'une erreur de \emph{dérive} que le gyroscope ne peut mesurer. Il faudrait alors mettre en abîme les deux méthodes de calcul afin que l'une compense l'erreur de l'autre et vice et versa. 
+	\paragraph{} Toutefois cette méthode n'est pas non plus parfaite puisqu'elle est amputée d'une erreur de \emph{dérive} que le gyroscope ne peut mesurer. Il faudrait alors mettre en abîme les deux méthodes de calcul afin que l'une compense l'erreur de l'autre et vice et versa.
 
 	\section{Implémentation et comparaison de la méthode de Simpson}
 	\paragraph{}
 	La méthode de Simpson n'a pas été implémentée par soucis de temps. Il s'agirait ici de l'implémenter pour ensuite la comparée avec la méthode d'Euler pour prouver qu'elle est plus performante.\\
-	Ceci dit, la mesure de l'angle de lacet et l'implémentation de la matrice de passage, cette comparaison est assez compromise.
+	Ceci dit, la méthode de Simpson nécessite la connaissance de 3 points de mesure pour faire l'approximation, ce qui double donc le temps de cycle de la méthode comparée à celle d'Euler. 
 	
 	\paragraph{}
-	D'autre méthode pourraient être aussi implémentées, comme la méthode du filtre de Kalman ou le filtre de Madgwick qui sont des méthode notamment utilisées dans les centrales inertielles industrielles.
+	D'autres méthodes pourraient être aussi implémentées, comme le filtrage de Kalman ou le filtrage de Madgwick qui sont des méthodes notamment utilisées dans les centrales inertielles industrielles. Leur algorithme fait entrer en jeu des quaternions et malgré quelques lectures et revues de code sur ce sujet, il semblait très compliqué d'expliquer vraiment en quoi consistaient ces méthodes.
 	
 	\section{Communication Interface vers carte}
 	\paragraph{}
-	On pourrait utiliser la liaison série dans le sens inverse. C'est-à-dire au lieu de faire du Broadcast pur et simple de l'information, l'interface utilisateur pourrait aussi écrire sur la liaison série et communiquer avec la carte pour par exemple lui demander d'utiliser une méthode plutôt qu'un autre ou modifier le temps de cycle de la carte.
+	il pourrait être possible d'utiliser la liaison série dans le sens inverse. C'est-à-dire au lieu de faire du Broadcast pur et simple de l'information, l'interface utilisateur pourrait aussi écrire sur la liaison série et communiquer avec la carte pour, par exemple, lui demander d'utiliser une méthode plutôt qu'une autre ou modifier le temps de cycle des calculs. \\
+	La librairie implémentée dans le projet permet cette amélioration, elle n'a juste pas été tentée.
+
 		
 \chapter*{Conclusion}
 \addcontentsline{toc}{chapter}{Conclusion}
 \paragraph{}
 Le projet permet actuellement de pouvoir visualiser l'orientation de la carte \emph{STM32F3} grâce à ces accéléromètres sur une interface graphique qui récupère les données via une liaison série USB.
 \paragraph{}
-Cela amorce les prémisses d'une centrale inertielle, mais comme nous l'avons vu, beaucoup de chemins et d'améliorations restent encore à faire, principalement en matière d'algorithme.\\
+Cela amorce les prémisses d'une centrale inertielle, mais comme nous l'avons vu, beaucoup de chemin et d'améliorations restent encore à faire, principalement en matière d'algorithme.\\
 La carte en elle même est capable de supporter la charge de travail d'une centrale inertielle complète, même si les temps de cycle sont parfois problématiques pour des méthodes trop peu précises.
 	
 \end{document}
